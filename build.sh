@@ -1,5 +1,11 @@
 #!/bin/sh
 
+ZLIB_VERSION="1.2.3"
+ZLIB_SOURCE_DIR="zlib-$ZLIB_VERSION"
+ZLIB_ARCHIVE="$ZLIB_SOURCE_DIR.tar.gz"
+ZLIB_URL="http://downloads.sourceforge.net/project/libpng/zlib/$ZLIB_VERSION/$ZLIB_ARCHIVE"
+ZLIB_MD5="debc62758716a169df9f62e6ab2bc634" # for zlib-1.2.3.tar.gz
+
 if [ -z "$autobuild" ] ; then 
     autobuild="$(which autobuild)"
 fi
@@ -38,17 +44,17 @@ autobuild_installed || fail
 # load autbuild provided shell functions and variables
 eval "$("$autobuild" source_environment)"
 
-fetch_archive "$FOO_URL" "$FOO_ARCHIVE" "$FOO_MD5"
-extract "$FOO_ARCHIVE"
+fetch_archive "$ZLIB_URL" "$ZLIB_ARCHIVE" "$ZLIB_MD5"
+extract "$ZLIB_ARCHIVE"
 
 pushd "$FOO_SOURCE_DIR"
     ./configure
     make
 popd
 
-"$autobuild" package
+#"$autobuild" package
 
-upload_item "installable" "$FOO_INSTALLABLE_PACKAGE_FILENAME"
+#upload_item "installable" "$ZLIB_INSTALLABLE_PACKAGE_FILENAME"
 
 pass
 
