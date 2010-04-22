@@ -6,12 +6,12 @@
     <key>dependencies</key>
     <map>
     </map>
-    <key>operations</key>
+    <key>build</key>
     <map>
-      <key>build</key>
+      <key>common</key>
       <map>
-        <key>commandline</key>
-        <string>sh ./build.sh</string>
+        <key>command</key>
+        <array><string>sh</string><string>./build.sh</string></array>
       </map>
     </map>
     <key>manifests</key>
