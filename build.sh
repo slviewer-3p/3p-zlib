@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# turn on verbose debugging output for parabuild logs.
+set -x
+
 if [ -z "$autobuild" ] ; then 
     autobuild="$(which autobuild)"
 fi
