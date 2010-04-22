@@ -1,21 +1,18 @@
 <?xml version="1.0" ?>
 <llsd>
-  <map>
-    <key>package_name</key>
-    <string>llfoo</string>
-    <key>dependencies</key>
+<map>
+    <key>llfoo</key>
     <map>
-    </map>
-    <key>build</key>
-    <map>
-      <key>common</key>
+      <key>build</key>
       <map>
-        <key>command</key>
-        <array><string>sh</string><string>./build.sh</string></array>
+        <key>common</key>
+        <map>
+          <key>command</key>
+          <string>sh ./build.sh</string>
+        </map>
       </map>
-    </map>
-    <key>manifests</key>
-    <map>
+      <key>builddir</key>
+      <string>build</string>
     </map>
   </map>
 </llsd>
