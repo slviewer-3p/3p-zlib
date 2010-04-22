@@ -47,10 +47,11 @@ eval "$("$autobuild" source_environment)"
 fetch_archive "$ZLIB_URL" "$ZLIB_ARCHIVE" "$ZLIB_MD5"
 extract "$ZLIB_ARCHIVE"
 
-pushd "$FOO_SOURCE_DIR"
+top="$(pwd)"
+cd "$ZLIB_SOURCE_DIR"
     ./configure
     make
-popd
+cd "$top"
 
 #"$autobuild" package
 
