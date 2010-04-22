@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# turn on verbose debugging output for parabuild logs.
+set -x
+
 ZLIB_VERSION="1.2.3"
 ZLIB_SOURCE_DIR="zlib-$ZLIB_VERSION"
 ZLIB_ARCHIVE="$ZLIB_SOURCE_DIR.tar.gz"
