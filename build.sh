@@ -44,6 +44,11 @@ set -e
 # not exist.  either way it's a fatal error
 autobuild_installed || fail
 
+# *HACK - bash doesn't know how to pass real pathnames to native windows python
+if [ "$OSTYPE" == 'cygwin' ] ; then
+	autobuild="$autobuild.cmd"
+fi
+
 # load autbuild provided shell functions and variables
 eval "$("$autobuild" source_environment)"
 
