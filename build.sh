@@ -45,7 +45,9 @@ set -e
 autobuild_installed || fail
 
 # load autbuild provided shell functions and variables
+set +x
 eval "$("$autobuild" source_environment)"
+set -x
 
 fetch_archive "$ZLIB_URL" "$ZLIB_ARCHIVE" "$ZLIB_MD5"
 extract "$ZLIB_ARCHIVE"
