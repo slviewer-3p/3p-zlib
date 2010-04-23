@@ -29,22 +29,34 @@
       <string>LICENSES/zlib.txt</string>
       <key>manifest</key>
       <map>
-        <key>darwin</key>
+        <key>common</key>
         <map>
           <key>files</key>
           <array>
             <string>include/*.h</string>
+            <string>LICENSES/zlib.txt</string>
+          </array>
+        </map>
+        <key>darwin</key>
+        <map>
+          <key>files</key>
+          <array>
             <string>lib/libz.a</string>
-            <string>LIBRARIES/zlib.txt</string>
           </array>
         </map>
         <key>linux</key>
         <map>
           <key>files</key>
           <array>
-            <string>include/*.h</string>
             <string>lib/libz.a</string>
-            <string>LIBRARIES/zlib.txt</string>
+          </array>
+        </map>
+        <key>windows</key>
+        <map>
+          <key>files</key>
+          <array>
+            <string>lib/debug/zlibd.lib</string>
+            <string>lib/release/zlib.lib</string>
           </array>
         </map>
       </map>
@@ -52,6 +64,8 @@
       <string>zlib-1.2.3</string>
       <key>version</key>
       <string>1.2.3</string>
+      <key>uploadtos3</key>
+      <integer>1</integer>
     </map>
   </map>
 </llsd>

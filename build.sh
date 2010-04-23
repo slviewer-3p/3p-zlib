@@ -81,9 +81,10 @@ cd "$ZLIB_SOURCE_DIR"
     tail -n 31 README > stage/LICENSES/zlib.txt
 cd "$top"
 
-#"$autobuild" package
+"$autobuild" package
 
-#upload_item "installable" "$ZLIB_INSTALLABLE_PACKAGE_FILENAME"
+ZLIB_INSTALLABLE_PACKAGE_FILENAME="zlib-$ZLIB_VERSION-$AUTOBUILD_PLATFORM-$(date +%Y%m%d)*.tar.bz2"
+"$autobuild" upload "$ZLIB_INSTALLABLE_PACKAGE_FILENAME"
 
 pass
 
