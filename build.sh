@@ -52,8 +52,11 @@ extract "$ZLIB_ARCHIVE"
 
 top="$(pwd)"
 cd "$ZLIB_SOURCE_DIR"
-    ./configure
+    ./configure --prefix="$(pwd)/stage"
     make
+    make install
+    mkdir -p stage/LICENSES
+    tail -n 31 README > stage/LICENSES/zlib.txt
 cd "$top"
 
 #"$autobuild" package
