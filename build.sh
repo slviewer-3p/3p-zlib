@@ -52,9 +52,24 @@ extract "$ZLIB_ARCHIVE"
 
 top="$(pwd)"
 cd "$ZLIB_SOURCE_DIR"
-    ./configure --prefix="$(pwd)/stage"
-    make
-    make install
+    case "$AUTOBUILD_PLATFORM" in
+        "windows")
+            build_sln "contrib/vstudio/vc8/zlibvc.sln" "Debug|Win32"
+            build_sln "contrib/vstudio/vc8/zlibvc.sln" "Release|Win32"
+            mkdir -p stage/lib/{debug,release}
+            cp "contrib/vstudio/vc8/x86/ZlibStatDebug/zlibstat.lib" \
+                "stage/lib/debug/zlibd.lib"
+            cp "contrib/vstudio/vc8/x86/ZlibStatRelease/zlibstat.lib" \
+                "stage/lib/release/zlib.lib"
+            mkdir -p "stage/include/zlib"
+            cp {zlib.h,zconf.h} "stage/include/zlib"
+        ;;
+        *)
+            ./configure --prefix="$(pwd)/stage"
+            make
+            make install
+        ;;
+    esac
     mkdir -p stage/LICENSES
     tail -n 31 README > stage/LICENSES/zlib.txt
 cd "$top"
