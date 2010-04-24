@@ -65,7 +65,7 @@ upload_item installer "$ZLIB_INSTALLABLE_PACKAGE_FILENAME" application/octet-str
 ZLIB_INSTALLABLE_PACKAGE_MD5="$(calc_md5 "$ZLIB_INSTALLABLE_PACKAGE_FILENAME")"
 echo "{'md5':'$ZLIB_INSTALLABLE_PACKAGE_MD5', 'url':'http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/$ZLIB_INSTALLABLE_PACKAGE_FILENAME'}" > "output.json"
 
-uplodad_item docs "output.json" text/plain
+upload_item docs "output.json" text/plain
 
 pass
 
