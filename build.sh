@@ -46,7 +46,7 @@ autobuild_installed || fail
 
 # *HACK - bash doesn't know how to pass real pathnames to native windows python
 if [ "$OSTYPE" == 'cygwin' ] ; then
-	autobuild="$autobuild.cmd"
+	autobuild="$(cygpath -u $autobuild.cmd)"
 fi
 
 # load autbuild provided shell functions and variables
