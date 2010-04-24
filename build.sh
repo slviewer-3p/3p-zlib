@@ -59,12 +59,13 @@ set -x
 "$autobuild" package
 
 ZLIB_INSTALLABLE_PACKAGE_FILENAME="$(ls -1 zlib-$ZLIB_VERSION-$AUTOBUILD_PLATFORM-$(date +%Y%m%d)*.tar.bz2)"
-"$autobuild" upload "$ZLIB_INSTALLABLE_PACKAGE_FILENAME"
+#"$autobuild" upload "$ZLIB_INSTALLABLE_PACKAGE_FILENAME"
+upload_item installer "$ZLIB_INSTALLABLE_PACKAGE_FILENAME" application/octet-stream
 
 ZLIB_INSTALLABLE_PACKAGE_MD5="$(calc_md5 "$ZLIB_INSTALLABLE_PACKAGE_FILENAME")"
 echo "{'md5':'$ZLIB_INSTALLABLE_PACKAGE_MD5', 'url':'http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/$ZLIB_INSTALLABLE_PACKAGE_FILENAME'}" > "output.json"
 
-uplodad_item installer "output.json" text/plain
+uplodad_item docs "output.json" text/plain
 
 pass
 
