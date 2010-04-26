@@ -38,21 +38,27 @@ set -e
 # not exist.  either way it's a fatal error
 autobuild_installed || fail
 
+# *HACK - bash doesn't know how to pass real pathnames to native windows python
+if [ "$OSTYPE" == 'cygwin' ] ; then
+	autobuild="$(cygpath -u $autobuild.cmd)"
+fi
+
 # load autbuild provided shell functions and variables
+set +x
 eval "$("$autobuild" source_environment)"
+set -x
 
-fetch_archive "$FOO_URL" "$FOO_ARCHIVE" "$FOO_MD5"
-extract "$FOO_ARCHIVE"
-
-top="$(pwd)"
-cd "$ZLIB_SOURCE_DIR"
-    ./configure
-    make
-cd "$top"
+"$autobuild" build
 
 "$autobuild" package
 
-upload_item "installable" "$FOO_INSTALLABLE_PACKAGE_FILENAME"
+FOO_INSTALLABLE_PACKAGE_FILENAME="$(ls -1 foo-$FOO_VERSION-$AUTOBUILD_PLATFORM-$(date +%Y%m%d)*.tar.bz2)"
+upload_item installer "$FOO_INSTALLABLE_PACKAGE_FILENAME" application/octet-stream
+
+FOO_INSTALLABLE_PACKAGE_MD5="$(calc_md5 "$FOO_INSTALLABLE_PACKAGE_FILENAME")"
+echo "{'md5':'$FOO_INSTALLABLE_PACKAGE_MD5', 'url':'http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/$FOO_INSTALLABLE_PACKAGE_FILENAME'}" > "output.json"
+
+upload_item docs "output.json" text/plain
 
 pass
 

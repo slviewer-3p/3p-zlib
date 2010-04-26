@@ -8,7 +8,7 @@
         <key>common</key>
         <map>
           <key>command</key>
-          <string>sh ./build.sh</string>
+          <string>sh ./build-cmd.sh</string>
         </map>
       </map>
       <key>builddir</key>
