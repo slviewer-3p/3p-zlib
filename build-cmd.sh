@@ -29,7 +29,8 @@ cd "$ZLIB_SOURCE_DIR"
         "windows")
             build_sln "contrib/vstudio/vc8/zlibvc.sln" "Debug|Win32"
             build_sln "contrib/vstudio/vc8/zlibvc.sln" "Release|Win32"
-            mkdir -p stage/lib/{debug,release}
+            mkdir -p stage/lib/debug
+            mkdir -p stage/lib/release
             cp "contrib/vstudio/vc8/x86/ZlibStatDebug/zlibstat.lib" \
                 "stage/lib/debug/zlibd.lib"
             cp "contrib/vstudio/vc8/x86/ZlibStatRelease/zlibstat.lib" \
