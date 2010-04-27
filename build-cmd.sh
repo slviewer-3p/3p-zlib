@@ -7,16 +7,16 @@ set -e
 
 if [ "$OSTYPE" = "cygwin" ] ; then
     # *HACK windows env vars are crap -brad
-    export autobuild="$(cygpath -u $AUTOBUILD)"
+    export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
 fi
 
-if [ -z "$autobuild" ] ; then 
+if [ -z "$AUTOBUILD" ] ; then 
     fail
 fi
 
 # load autbuild provided shell functions and variables
 set +x
-eval "$("$autobuild" source_environment)"
+eval "$("$AUTOBUILD" source_environment)"
 set -x
 
 fetch_archive "$FOO_URL" "$FOO_ARCHIVE" "$FOO_MD5"

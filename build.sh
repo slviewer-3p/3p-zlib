@@ -3,8 +3,8 @@
 # turn on verbose debugging output for parabuild logs.
 set -x
 
-if [ -z "$autobuild" ] ; then 
-    autobuild="$(which autobuild)"
+if [ -z "$AUTOBUILD" ] ; then 
+    AUTOBUILD="$(which autobuild)"
 fi
 
 # *NOTE: temporary workaround until autobuild is installed on the build farm
@@ -17,18 +17,18 @@ autobuild_installed ()
     #local hardcoded_rev="c8062b08a710"
     #local boostrap_url="http://hg.lindenlab.com/brad/autobuild-trunk/get/$hardcoded_rev.bz2"
 
-    if [ -z "$autobuild" ] || [ ! -x "$autobuild" ] ; then
-        echo "failed to find executable autobuild $autobuild" >&2
+    if [ -z "$AUTOBUILD" ] || [ ! -x "$AUTOBUILD" ] ; then
+        echo "failed to find executable autobuild $AUTOBUILD" >&2
 
         echo "fetching autobuild rev $hardcoded_rev from $bootstrap_url"
         curl "$bootstrap_url" | tar -xj
-        autobuild="$(pwd)/autobuild-$hardcoded_rev/bin/autobuild"
-        if [ ! -x "$autobuild" ] ; then
+        AUTOBUILD="$(pwd)/autobuild-$hardcoded_rev/bin/autobuild"
+        if [ ! -x "$AUTOBUILD" ] ; then
             echo "failed to bootstrap autobuild!"
             return 1
         fi
     fi
-    echo "located autobuild tool: '$autobuild'"
+    echo "located autobuild tool: '$AUTOBUILD'"
 }
 
 # at this point we should know where everything is, so make errors fatal
@@ -40,17 +40,17 @@ autobuild_installed || fail
 
 # *HACK - bash doesn't know how to pass real pathnames to native windows python
 if [ "$OSTYPE" == 'cygwin' ] ; then
-	autobuild="$(cygpath -u $autobuild.cmd)"
+	AUTOBUILD="$(cygpath -u $AUTOBUILD.cmd)"
 fi
 
 # load autbuild provided shell functions and variables
 set +x
-eval "$("$autobuild" source_environment)"
+eval "$("$AUTOBUILD" source_environment)"
 set -x
 
-"$autobuild" build
+"$AUTOBUILD" build
 
-"$autobuild" package
+"$AUTOBUILD" package
 
 FOO_INSTALLABLE_PACKAGE_FILENAME="$(ls -1 foo-$FOO_VERSION-$AUTOBUILD_PLATFORM-$(date +%Y%m%d)*.tar.bz2)"
 upload_item installer "$FOO_INSTALLABLE_PACKAGE_FILENAME" application/octet-stream
