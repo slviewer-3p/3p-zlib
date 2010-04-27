@@ -5,6 +5,11 @@ set -x
 # make errors fatal
 set -e
 
+if [ "$OSTYPE" = "cygwin" ] ; then
+    # *HACK windows env vars are crap -brad
+    export autobuild="$(cygpath -u $AUTOBUILD.cmd)"
+fi
+
 if [ -z "$autobuild" ] ; then 
     fail
 fi
