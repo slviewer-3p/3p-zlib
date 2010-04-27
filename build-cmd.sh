@@ -7,7 +7,7 @@ set -e
 
 if [ "$OSTYPE" = "cygwin" ] ; then
     # *HACK windows env vars are crap -brad
-    export autobuild="$(cygpath -u $AUTOBUILD.cmd)"
+    export autobuild="$(cygpath -u $AUTOBUILD)"
 fi
 
 if [ -z "$autobuild" ] ; then 
