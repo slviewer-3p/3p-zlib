@@ -11,6 +11,11 @@ ZLIB_ARCHIVE="$ZLIB_SOURCE_DIR.tar.gz"
 ZLIB_URL="http://downloads.sourceforge.net/project/libpng/zlib/$ZLIB_VERSION/$ZLIB_ARCHIVE"
 ZLIB_MD5="debc62758716a169df9f62e6ab2bc634" # for zlib-1.2.3.tar.gz
 
+if [ "$OSTYPE" = "cygwin" ] ; then
+    # *HACK windows env vars are crap -brad
+    export autobuild="$(cygpath -u $AUTOBUILD.cmd)"
+fi
+
 if [ -z "$autobuild" ] ; then 
     fail
 fi
