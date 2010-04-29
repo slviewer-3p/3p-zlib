@@ -1,18 +1,5 @@
 <?xml version="1.0" ?>
 <llsd>
 <map>
-    <key>llfoo</key>
-    <map>
-      <key>build</key>
-      <map>
-        <key>common</key>
-        <map>
-          <key>command</key>
-          <string>sh ./build-cmd.sh</string>
-        </map>
-      </map>
-      <key>builddir</key>
-      <string>build</string>
-    </map>
-  </map>
+</map>
 </llsd>
