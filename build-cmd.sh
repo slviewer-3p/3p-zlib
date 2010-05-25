@@ -42,8 +42,13 @@ cd "$ZLIB_SOURCE_DIR"
             mkdir -p "stage/include/zlib"
             cp {zlib.h,zconf.h} "stage/include/zlib"
         ;;
-        *)
+        "darwin")
             ./configure --prefix="$(pwd)/stage"
+            make
+            make install
+        ;;
+        "linux")
+            ./configure --prefix="$(pwd)/stage" CFLAGS="-m32" CXXFLAGS="-m32"
             make
             make install
         ;;

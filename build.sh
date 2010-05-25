@@ -46,21 +46,19 @@ if [ "$OSTYPE" == 'cygwin' ] ; then
 fi
 
 # load autbuild provided shell functions and variables
-set +x
 eval "$("$AUTOBUILD" source_environment)"
-set -x
 
 "$AUTOBUILD" build
 
 "$AUTOBUILD" package
 
 ZLIB_INSTALLABLE_PACKAGE_FILENAME="$(ls -1 zlib-$ZLIB_VERSION-$AUTOBUILD_PLATFORM-$(date +%Y%m%d)*.tar.bz2)"
-upload_item installer "$ZLIB_INSTALLABLE_PACKAGE_FILENAME" application/octet-stream
+"$AUTOBUILD" upload "$ZLIB_INSTALLABLE_PACKAGE_FILENAME"
 
 ZLIB_INSTALLABLE_PACKAGE_MD5="$(calc_md5 "$ZLIB_INSTALLABLE_PACKAGE_FILENAME")"
-echo "{'md5':'$ZLIB_INSTALLABLE_PACKAGE_MD5', 'url':'http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/$ZLIB_INSTALLABLE_PACKAGE_FILENAME'}" > "output.json"
+echo "{'md5':'$ZLIB_INSTALLABLE_PACKAGE_MD5', 'url':'http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/$ZLIB_INSTALLABLE_PACKAGE_FILENAME'}" > "output.js"
 
-upload_item docs "output.json" text/plain
+upload_item installer "output.js" text/plain
 
 pass
 
