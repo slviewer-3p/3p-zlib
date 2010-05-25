@@ -58,7 +58,7 @@ ZLIB_INSTALLABLE_PACKAGE_FILENAME="$(ls -1 zlib-$ZLIB_VERSION-$AUTOBUILD_PLATFOR
 ZLIB_INSTALLABLE_PACKAGE_MD5="$(calc_md5 "$ZLIB_INSTALLABLE_PACKAGE_FILENAME")"
 echo "{'md5':'$ZLIB_INSTALLABLE_PACKAGE_MD5', 'url':'http://s3.amazonaws.com/viewer-source-downloads/install_pkgs/$ZLIB_INSTALLABLE_PACKAGE_FILENAME'}" > "output.js"
 
-upload_item installer "output.js" text/plain
+#upload_item installer "output.js" text/plain
 
 pass
 

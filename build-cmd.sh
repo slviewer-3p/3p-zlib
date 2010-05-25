@@ -48,7 +48,7 @@ cd "$ZLIB_SOURCE_DIR"
             make install
         ;;
         "linux")
-            ./configure --prefix="$(pwd)/stage" CFLAGS="-m32" CXXFLAGS="-m32"
+            CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$(pwd)/stage"
             make
             make install
         ;;
