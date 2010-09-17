@@ -5,6 +5,11 @@
     <map>
       <key>build</key>
       <map>
+        <key>common</key>
+        <map>
+          <key>directory</key>
+          <string>zlib-1.2.3/stage</string>
+        </map>
         <key>darwin</key>
         <map>
           <key>command</key>
@@ -21,8 +26,6 @@
           <string>sh ./build-cmd.sh</string>
         </map>
       </map>
-      <key>builddir</key>
-      <string>zlib-1.2.3/stage</string>
       <key>license</key>
       <string>zlib</string>
       <key>licensefile</key>
@@ -33,7 +36,7 @@
         <map>
           <key>files</key>
           <array>
-            <string>include/*.h</string>
+            <string>include/zlib/*.h</string>
             <string>LICENSES/zlib.txt</string>
           </array>
         </map>
