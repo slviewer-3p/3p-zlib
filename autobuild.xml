@@ -1,74 +1,121 @@
 <?xml version="1.0" ?>
 <llsd>
 <map>
-    <key>zlib</key>
+    <key>package_description</key>
     <map>
-      <key>build</key>
-      <map>
-        <key>common</key>
-        <map>
-          <key>directory</key>
-          <string>zlib-1.2.3/stage</string>
-        </map>
-        <key>darwin</key>
-        <map>
-          <key>command</key>
-          <string>sh ./build-cmd.sh</string>
-        </map>
-        <key>linux</key>
-        <map>
-          <key>command</key>
-          <string>sh ./build-cmd.sh</string>
-        </map>
-        <key>windows</key>
-        <map>
-          <key>command</key>
-          <string>sh ./build-cmd.sh</string>
-        </map>
-      </map>
       <key>license</key>
       <string>zlib</string>
-      <key>licensefile</key>
+      <key>license_file</key>
       <string>LICENSES/zlib.txt</string>
-      <key>manifest</key>
+      <key>name</key>
+      <string>zlib</string>
+      <key>platforms</key>
       <map>
         <key>common</key>
         <map>
-          <key>files</key>
+          <key>build_directory</key>
+          <string>zlib-1.2.3/stage</string>
+          <key>configurations</key>
+          <map>
+            <key>Release</key>
+            <map>
+              <key>build</key>
+              <map>
+                <key>arguments</key>
+                <array>
+                  <string>../../build-cmd.sh</string>
+                </array>
+                <key>command</key>
+                <string>sh</string>
+              </map>
+              <key>name</key>
+              <string>Release</string>
+            </map>
+          </map>
+          <key>manifest</key>
           <array>
             <string>include/zlib/*.h</string>
             <string>LICENSES/zlib.txt</string>
           </array>
+          <key>name</key>
+          <string>common</string>
         </map>
         <key>darwin</key>
         <map>
-          <key>files</key>
+          <key>configurations</key>
+          <map>
+            <key>Release</key>
+            <map>
+              <key>build</key>
+              <map>
+              </map>
+              <key>default</key>
+              <boolean>true</boolean>
+              <key>name</key>
+              <string>Release</string>
+            </map>
+          </map>
+          <key>manifest</key>
           <array>
             <string>lib/libz.a</string>
           </array>
+          <key>name</key>
+          <string>darwin</string>
         </map>
         <key>linux</key>
         <map>
-          <key>files</key>
+          <key>configurations</key>
+          <map>
+            <key>Release</key>
+            <map>
+              <key>build</key>
+              <map>
+              </map>
+              <key>default</key>
+              <boolean>true</boolean>
+              <key>name</key>
+              <string>Release</string>
+            </map>
+          </map>
+          <key>manifest</key>
           <array>
             <string>lib/libz.a</string>
           </array>
+          <key>name</key>
+          <string>linux</string>
         </map>
         <key>windows</key>
         <map>
-          <key>files</key>
+          <key>configurations</key>
+          <map>
+            <key>Release</key>
+            <map>
+              <key>build</key>
+              <map>
+              </map>
+              <key>default</key>
+              <boolean>true</boolean>
+              <key>name</key>
+              <string>Release</string>
+            </map>
+          </map>
+          <key>manifest</key>
           <array>
             <string>lib/debug/zlibd.lib</string>
             <string>lib/release/zlib.lib</string>
           </array>
+          <key>name</key>
+          <string>windows</string>
         </map>
       </map>
-      <key>sourcedir</key>
+      <key>source_directory</key>
       <string>zlib-1.2.3</string>
       <key>version</key>
       <string>1.2.3</string>
-      <key>uploadtos3</key>
-      <integer>1</integer>
     </map>
+    <key>type</key>
+    <string>autobuild</string>
+    <key>version</key>
+    <string>1.2</string>
   </map>
 </llsd>
