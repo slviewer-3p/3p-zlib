@@ -23,9 +23,8 @@ set +x
 eval "$("$AUTOBUILD" source_environment)"
 set -x
 
-top="$(pwd)"
-cd "$ZLIB_SOURCE_DIR"
-	stage="$(pwd)/stage"
+stage="$(pwd)/stage"
+pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
         "windows")
             build_sln "contrib/vstudio/vc8/zlibvc.sln" "Debug|Win32"
@@ -54,9 +53,9 @@ cd "$ZLIB_SOURCE_DIR"
 			mv "$stage/include/"*.h "$stage/include/zlib/"
         ;;
     esac
-    mkdir -p stage/LICENSES
-    tail -n 31 README > stage/LICENSES/zlib.txt
-cd "$top"
+    mkdir -p "$stage/LICENSES"
+    tail -n 31 README > "$stage/LICENSES/zlib.txt"
+popd
 
 pass
 
