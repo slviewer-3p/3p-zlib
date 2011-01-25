@@ -35,7 +35,7 @@ pushd "$ZLIB_SOURCE_DIR"
                 "$stage/lib/debug/zlibd.lib"
             cp "contrib/vstudio/vc8/x86/ZlibStatRelease/zlibstat.lib" \
                 "$stage/lib/release/zlib.lib"
-            mkdir -p "stage/include/zlib"
+            mkdir -p "$stage/include/zlib"
             cp {zlib.h,zconf.h} "$stage/include/zlib"
         ;;
         "darwin")
