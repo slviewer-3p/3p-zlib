@@ -23,6 +23,7 @@
               <map>
                 <key>arguments</key>
                 <array>
+                  <string>-c</string>
                   <string>../build-cmd.sh</string>
                 </array>
                 <key>command</key>
