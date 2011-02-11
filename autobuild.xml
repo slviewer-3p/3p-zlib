@@ -110,9 +110,9 @@
         </map>
       </map>
       <key>source_directory</key>
-      <string>zlib-1.2.3</string>
+      <string>zlib-1.2.5</string>
       <key>version</key>
-      <string>1.2.3</string>
+      <string>1.2.5</string>
     </map>
     <key>type</key>
     <string>autobuild</string>

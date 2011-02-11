@@ -7,7 +7,7 @@ set -x
 # make errors fatal
 set -e
 
-ZLIB_VERSION="1.2.3"
+ZLIB_VERSION="1.2.5"
 ZLIB_SOURCE_DIR="zlib-$ZLIB_VERSION"
 
 if [ -z "$AUTOBUILD" ] ; then 
@@ -27,13 +27,19 @@ stage="$(pwd)/stage"
 pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
         "windows")
-            build_sln "contrib/vstudio/vc8/zlibvc.sln" "Debug|Win32"
-            build_sln "contrib/vstudio/vc8/zlibvc.sln" "Release|Win32"
+            load_vsvars
+            
+            pushd contrib/masmx86
+                ./bld_ml32.bat
+            popd
+            
+            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Debug|Win32"
+            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Release|Win32"
             mkdir -p "$stage/lib/debug"
             mkdir -p "$stage/lib/release"
-            cp "contrib/vstudio/vc8/x86/ZlibStatDebug/zlibstat.lib" \
+            cp "contrib/vstudio/vc10/x86/ZlibStatDebug/zlibstat.lib" \
                 "$stage/lib/debug/zlibd.lib"
-            cp "contrib/vstudio/vc8/x86/ZlibStatRelease/zlibstat.lib" \
+            cp "contrib/vstudio/vc10/x86/ZlibStatRelease/zlibstat.lib" \
                 "$stage/lib/release/zlib.lib"
             mkdir -p "$stage/include/zlib"
             cp {zlib.h,zconf.h} "$stage/include/zlib"
