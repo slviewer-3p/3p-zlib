@@ -33,8 +33,8 @@ pushd "$ZLIB_SOURCE_DIR"
                 ./bld_ml32.bat
             popd
             
-            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Debug|Win32"
-            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Release|Win32"
+            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Debug|Win32" "zlibstat"
+            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Release|Win32" "zlibstat"
             mkdir -p "$stage/lib/debug"
             mkdir -p "$stage/lib/release"
             cp "contrib/vstudio/vc10/x86/ZlibStatDebug/zlibstat.lib" \
