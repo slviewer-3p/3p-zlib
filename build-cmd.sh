@@ -55,8 +55,12 @@ pushd "$ZLIB_SOURCE_DIR"
             CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$stage"
             make
             make install
-			mkdir -p "$stage/include/zlib"
-			mv "$stage/include/"*.h "$stage/include/zlib/"
+            mkdir -p "$stage/include/zlib"
+            mv "$stage/include/"*.h "$stage/include/zlib/"
+
+            mv "$stage/lib" "$stage/release"
+            mkdir -p "$stage/lib"
+            mv "$stage/release" "$stage/lib"
         ;;
     esac
     mkdir -p "$stage/LICENSES"
