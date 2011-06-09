@@ -27,7 +27,7 @@
                   <string>../build-cmd.sh</string>
                 </array>
                 <key>command</key>
-                <string>sh</string>
+                <string>bash</string>
               </map>
               <key>name</key>
               <string>Release</string>
