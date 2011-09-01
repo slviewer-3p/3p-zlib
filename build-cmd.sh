@@ -45,11 +45,15 @@ pushd "$ZLIB_SOURCE_DIR"
             cp {zlib.h,zconf.h} "$stage/include/zlib"
         ;;
         "darwin")
+            opts='-arch i386 -iwithsysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5'
+            export CFLAGS="$opts"
+            export CXXFLAGS="$opts"
+            export LDFLAGS="$opts"
             ./configure --prefix="$stage"
             make
             make install
-			mkdir -p "$stage/include/zlib"
-			mv "$stage/include/"*.h "$stage/include/zlib/"
+            mkdir -p "$stage/include/zlib"
+            mv "$stage/include/"*.h "$stage/include/zlib/"
         ;;
         "linux")
             CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$stage"
