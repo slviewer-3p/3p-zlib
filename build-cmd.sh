@@ -56,15 +56,24 @@ pushd "$ZLIB_SOURCE_DIR"
             mv "$stage/include/"*.h "$stage/include/zlib/"
         ;;
         "linux")
-            CFLAGS="-m32" CXXFLAGS="-m32" ./configure --prefix="$stage"
+			# do release build
+            CFLAGS="-m32 -O2" CXXFLAGS="-m32 -O2" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
-            mkdir -p "$stage/include/zlib"
-            mv "$stage/include/"*.h "$stage/include/zlib/"
 
-            mv "$stage/lib" "$stage/release"
-            mkdir -p "$stage/lib"
-            mv "$stage/release" "$stage/lib"
+			# clean the build artifacts
+			make distclean
+
+			# do debug build
+            CFLAGS="-m32 -O0 -gstabs+" CXXFLAGS="-m32 -O0 -gstabs+" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
+            make
+            make install
+
+			# fix the names of the debug library files
+			for f in `ls $stage/lib/debug/libz*`
+			do
+				mv ${f} ${f/libz/libz_debug}
+			done
         ;;
     esac
     mkdir -p "$stage/LICENSES"

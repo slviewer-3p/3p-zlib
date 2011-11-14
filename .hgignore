@@ -1,3 +1,10 @@
 syntax: glob
 stage/
 autobuild-parabuild-bootstrap/
+zlib-1.2.5/*.lo
+zlib-1.2.5/*.o
+zlib-1.2.5/*.so*
+zlib-1.2.5/*.a
+zlib-1.2.5/*.pc
+zlib-1.2.5/example*
+zlib-1.2.5/minigzip*
