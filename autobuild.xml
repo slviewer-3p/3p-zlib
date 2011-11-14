@@ -81,7 +81,7 @@
           <key>manifest</key>
           <array>
             <string>lib/release/libz.a</string>
-            <string>lib/debug/libz_debug.a</string>
+            <string>lib/debug/libz.a</string>
           </array>
           <key>name</key>
           <string>linux</string>

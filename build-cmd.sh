@@ -68,12 +68,6 @@ pushd "$ZLIB_SOURCE_DIR"
             CFLAGS="-m32 -O0 -gstabs+" CXXFLAGS="-m32 -O0 -gstabs+" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
             make
             make install
-
-			# fix the names of the debug library files
-			for f in `ls $stage/lib/debug/libz*`
-			do
-				mv ${f} ${f/libz/libz_debug}
-			done
         ;;
     esac
     mkdir -p "$stage/LICENSES"
