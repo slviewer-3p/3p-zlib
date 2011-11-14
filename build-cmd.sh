@@ -57,7 +57,7 @@ pushd "$ZLIB_SOURCE_DIR"
         ;;
         "linux")
 			# do release build
-            CFLAGS="-m32 -O2" CXXFLAGS="-m32 -O2" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
+            CFLAGS="-m32 -O3" CXXFLAGS="-m32 -O3" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
 
