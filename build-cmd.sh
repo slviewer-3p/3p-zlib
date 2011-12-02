@@ -18,7 +18,7 @@ if [ "$OSTYPE" = "cygwin" ] ; then
     export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
 fi
 
-# load autbuild provided shell functions and variables
+# load autobuild provided shell functions and variables
 set +x
 eval "$("$AUTOBUILD" source_environment)"
 set -x
@@ -46,15 +46,18 @@ pushd "$ZLIB_SOURCE_DIR"
         ;;
         "darwin")
             opts='-arch i386 -iwithsysroot /Developer/SDKs/MacOSX10.5.sdk -mmacosx-version-min=10.5'
-            export CFLAGS="$opts"
-            export CXXFLAGS="$opts"
-            export LDFLAGS="$opts"
-            ./configure --prefix="$stage"
+            CFLAGS="$opts -O3" LDFLAGS="$opts" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
-            mkdir -p "$stage/include/zlib"
-            mv "$stage/include/"*.h "$stage/include/zlib/"
-        ;;
+
+			make distclean
+			
+			CFLAGS="$opts -O0 -g" LDFLAGS="$opts" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
+            make
+            make install
+			
+        ;;            
+			
         "linux")
 			# do release build
             CFLAGS="-m32 -O3" CXXFLAGS="-m32 -O3" ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
