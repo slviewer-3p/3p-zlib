@@ -7,7 +7,7 @@ set -x
 # make errors fatal
 set -e
 
-ZLIB_VERSION="1.2.5"
+ZLIB_VERSION="1.2.6"
 ZLIB_SOURCE_DIR="zlib-$ZLIB_VERSION"
 
 if [ -z "$AUTOBUILD" ] ; then 
