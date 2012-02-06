@@ -28,7 +28,9 @@ pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
         "windows")
             load_vsvars
-            
+
+            cmake .
+
             pushd contrib/masmx86
                 ./bld_ml32.bat
             popd
