@@ -7,7 +7,7 @@ set -x
 # make errors fatal
 set -e
 
-ZLIB_VERSION="1.2.5"
+ZLIB_VERSION="1.2.6"
 ZLIB_SOURCE_DIR="zlib-$ZLIB_VERSION"
 
 if [ -z "$AUTOBUILD" ] ; then 
@@ -28,7 +28,9 @@ pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
         "windows")
             load_vsvars
-            
+
+            cmake .
+
             pushd contrib/masmx86
                 ./bld_ml32.bat
             popd
