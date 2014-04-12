@@ -59,9 +59,7 @@
           <key>manifest</key>
           <array>
             <string>lib/debug/libz.a</string>
-            <string>lib/debug/libz*.dylib</string>
             <string>lib/release/libz.a</string>
-            <string>lib/release/libz*.dylib</string>
           </array>
           <key>name</key>
           <string>darwin</string>
@@ -84,9 +82,7 @@
           <key>manifest</key>
           <array>
             <string>lib/release/libz.a</string>
-            <string>lib/release/libz.so*</string>
             <string>lib/debug/libz.a</string>
-            <string>lib/debug/libz.so*</string>
           </array>
           <key>name</key>
           <string>linux</string>

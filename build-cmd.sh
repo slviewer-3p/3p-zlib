@@ -59,7 +59,15 @@ pushd "$ZLIB_SOURCE_DIR"
         ;;
 
         "darwin")
-            opts="${TARGET_OPTS:--arch i386 -iwithsysroot /Developer/SDKs/MacOSX10.7.sdk -mmacosx-version-min=10.6}"
+            # Select SDK with full path.  This shouldn't have much effect on this
+            # build but adding to establish a consistent pattern.
+            #
+            # sdk=/Developer/SDKs/MacOSX10.6.sdk/
+            # sdk=/Developer/SDKs/MacOSX10.7.sdk/
+            # sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/
+            sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/
+
+            opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.6}"
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
 
@@ -103,6 +111,21 @@ pushd "$ZLIB_SOURCE_DIR"
         ;;            
             
         "linux")
+            # Linux build environment at Linden comes pre-polluted with stuff that can
+            # seriously damage 3rd-party builds.  Environmental garbage you can expect
+            # includes:
+            #
+            #    DISTCC_POTENTIAL_HOSTS     arch           root        CXXFLAGS
+            #    DISTCC_LOCATION            top            branch      CC
+            #    DISTCC_HOSTS               build_name     suffix      CXX
+            #    LSDISTCC_ARGS              repo           prefix      CFLAGS
+            #    cxx_version                AUTOBUILD      SIGN        CPPFLAGS
+            #
+            # So, clear out bits that shouldn't affect our configure-directed build
+            # but which do nonetheless.
+            #
+            # unset DISTCC_HOSTS CC CXX CFLAGS CPPFLAGS CXXFLAGS
+
             # Prefer gcc-4.6 if available.
             if [[ -x /usr/bin/gcc-4.6 && -x /usr/bin/g++-4.6 ]]; then
                 export CC=/usr/bin/gcc-4.6

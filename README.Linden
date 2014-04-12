@@ -81,21 +81,25 @@
 
     Mac OS X:
     * lib/debug/libz.a
+    * lib/release/libz.a
+
+    Mac OS X (built but not in manifest):
     * lib/debug/libz.1.2.8.dylib (dylib - install path:
       @executable_path/../Resources/libz.1.dylib)
     * lib/debug/libz.1.dylib (symlink - link target)
     * lib/debug/libz.dylib (symlink)
-    * lib/release/libz.a
     * lib/release/libz.1.2.8.dylib
     * lib/release/libz.1.dylib
     * lib/release/libz.dylib
 
     Linux:
     * lib/release/libz.a
+    * lib/debug/libz.a
+
+    Linux (built but not in manifest):
     * lib/release/libz.so.1 (symlink)
     * lib/release/libz.so (synlink) 
     * lib/release/libz.so.1.2.8 (shared)
-    * lib/debug/libz.a
     * lib/debug/libz.so.1
     * lib/debug/libz.so
     * lib/debug/libz.so.1.2.8
