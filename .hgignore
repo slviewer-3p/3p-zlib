@@ -1,10 +1,14 @@
 syntax: glob
 stage/
 autobuild-parabuild-bootstrap/
-zlib-1.2.5/*.lo
-zlib-1.2.5/*.o
-zlib-1.2.5/*.so*
-zlib-1.2.5/*.a
-zlib-1.2.5/*.pc
-zlib-1.2.5/example*
-zlib-1.2.5/minigzip*
+zlib-1.2.6/*.lo
+zlib-1.2.6/*.o
+zlib-1.2.6/*.so*
+zlib-1.2.6/*.a
+zlib-1.2.6/*.pc
+zlib-1.2.6/example*
+zlib-1.2.6/minigzip*
+zlib-1.2.6/*.dylib
+zlib-1.2.6/ztest*.dSYM/
+zlib-1.2.6/configure.log
+zlib-1.2.6/Makefile
