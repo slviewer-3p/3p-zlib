@@ -118,8 +118,6 @@
           <string>windows</string>
         </map>
       </map>
-      <key>source_directory</key>
-      <string>zlib-1.2.6</string>
       <key>version</key>
       <string>1.2.6</string>
     </map>
