@@ -58,15 +58,8 @@
           </map>
           <key>manifest</key>
           <array>
-            <string>lib/libz.a</string>
-            <string>lib/release/*.a</string>
-            <string>lib/debug/*.a</string>
-            <string>lib/debug/libz.1.2.5.dylib</string>
-            <string>lib/debug/libz.1.dylib</string>
-            <string>lib/debug/libz.dylib</string>
-            <string>lib/release/libz.1.2.5.dylib</string>
-            <string>lib/release/libz.1.dylib</string>
-            <string>lib/release/libz.dylib</string>
+            <string>lib/debug/libz.a</string>
+            <string>lib/release/libz.a</string>
           </array>
           <key>name</key>
           <string>darwin</string>
@@ -119,7 +112,7 @@
         </map>
       </map>
       <key>version</key>
-      <string>1.2.6</string>
+      <string>1.2.8</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
