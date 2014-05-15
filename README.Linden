@@ -46,7 +46,7 @@
 
 2.  Modifications
 
-    Essential modifications to zlib distribution.
+    2.1  Building Zlib
 
     * ZLIB_WINAPI preprocessor define removed from Visual Studio
     project file zlibstat.vcxproj.  This forces using stdcall rather
@@ -61,6 +61,25 @@
     using a debug build in production, that's been switched to
     non-debug but the reason for debug is not known.
 
+    2.2  Building Minizip.lib/libminizip.a
+
+    Minizip is a small contributed utility which demonstrates file
+    compression and which can be built as a library.  The Colladadom
+    library has been building with a binary blob of this library from
+    unknown sources and build configurations.  We're now building and
+    distributing this small library as a part of the zlib package.
+
+    Building the source wasn't fully supported in the 1.2.8
+    distribution and two ad hoc makefiles, Makefile.Linden and
+    Makefile.Linden.Win32.mak, have been created to build debug and
+    release archives.  Future work might go into shifting this onto VS
+    project files or into cmake (the latter seems to be the direction
+    zlib is heading).
+
+    Developers building STANDALONE versions of the viewer may need to
+    find their own solution for getting a minizip library.  The
+    colladadom library will no longer export these functions.
+
 
 3.  Source Origin
 
@@ -74,14 +93,21 @@
     Common:
     * include/zlib/zconf.h
     * include/zlib/zlib.h
+    * include/minizip/unzip.h
+    * include/minizip/zip.h
+    * include/minizip/ioapi.h
 
     Windows:
     * lib/release/zlib.lib
+    * lib/release/minzip.lib
     * lib/debug/zlibd.lib
+    * lib/debug/minzip.lib
 
     Mac OS X:
     * lib/debug/libz.a
+    * lib/debug/libminzip.a
     * lib/release/libz.a
+    * lib/release/libminzip.a
 
     Mac OS X (built but not in manifest):
     * lib/debug/libz.1.2.8.dylib (dylib - install path:
@@ -94,7 +120,9 @@
 
     Linux:
     * lib/release/libz.a
+    * lib/release/libminzip.a
     * lib/debug/libz.a
+    * lib/debug/libminzip.a
 
     Linux (built but not in manifest):
     * lib/release/libz.so.1 (symlink)
@@ -103,6 +131,29 @@
     * lib/debug/libz.so.1
     * lib/debug/libz.so
     * lib/debug/libz.so.1.2.8
+
+
+5.  Consumers/Dependents
+
+    Packages dependent on zlib which will need attention
+    (autobuild.xml) after changes.  This is not authoritative, use
+    appropriate build tools to find all dependents.
+
+    * freetype
+    * libpng
+    * openssl
+    * libxml
+
+    * fontconfig
+    * curl
+    * SDL
+
+    * colladadom
+    * openjpeg
+    * llqtwebkit
+
+    * viewer
+
 
 
 ===================================================================

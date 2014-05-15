@@ -26,6 +26,7 @@ set -x
 stage="$(pwd)/stage"
 pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
+
         "windows")
             load_vsvars
 
@@ -56,6 +57,17 @@ pushd "$ZLIB_SOURCE_DIR"
                 "$stage/lib/release/zlib.lib"
             mkdir -p "$stage/include/zlib"
             cp -a zlib.h zconf.h "$stage/include/zlib"
+
+            # minizip
+            pushd contrib/minizip
+                nmake /f Makefile.Linden.Win32.mak DEBUG=1
+                cp -a minizip.lib "$stage"/lib/debug/
+                nmake /f Makefile.Linden.Win32.mak DEBUG=1 clean
+
+                nmake /f Makefile.Linden.Win32.mak
+                cp -a minizip.lib "$stage"/lib/release/
+                nmake /f Makefile.Linden.Win32.mak clean
+            popd
         ;;
 
         "darwin")
@@ -72,7 +84,8 @@ pushd "$ZLIB_SOURCE_DIR"
             install_name="@executable_path/../Resources/libz.1.dylib"
 
             # Debug first
-            CFLAGS="$opts -O0 -gdwarf-2 -fPIC -DPIC" LDFLAGS="-install_name \"${install_name}\"" \
+            CFLAGS="$opts -O0 -gdwarf-2 -fPIC -DPIC" \
+                LDFLAGS="-install_name \"${install_name}\" -headerpad_max_install_names" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
             make
             make install
@@ -91,10 +104,21 @@ pushd "$ZLIB_SOURCE_DIR"
                 rm -rf ../Resources
             fi
 
+            # minizip
+            pushd contrib/minizip
+                CFLAGS="$opts -O0 -gdwarf-2 -fPIC -DPIC" make -f Makefile.Linden all
+                cp -a libminizip.a "$stage"/lib/debug/
+                if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                    make -f Makefile.Linden test
+                fi
+                make -f Makefile.Linden clean
+            popd
+
             make distclean
 
             # Now release
-            CFLAGS="$opts -O3 -gdwarf-2 -fPIC -DPIC" LDFLAGS="-install_name \"${install_name}\"" \
+            CFLAGS="$opts -O3 -gdwarf-2 -fPIC -DPIC" \
+                LDFLAGS="-install_name \"${install_name}\" -headerpad_max_install_names" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
@@ -108,6 +132,18 @@ pushd "$ZLIB_SOURCE_DIR"
 
                 rm -rf ../Resources
             fi
+
+            # minizip
+            pushd contrib/minizip
+                CFLAGS="$opts -O3 -gdwarf-2 -fPIC -DPIC" make -f Makefile.Linden all
+                cp -a libminizip.a "$stage"/lib/release/
+                if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                    make -f Makefile.Linden test
+                fi
+                make -f Makefile.Linden clean
+            popd
+
+            make distclean
         ;;            
             
         "linux")
@@ -155,6 +191,17 @@ pushd "$ZLIB_SOURCE_DIR"
                 make test
             fi
 
+            # minizip
+            pushd contrib/minizip
+                CFLAGS="$opts -O0 -g -fPIC -DPIC" make -f Makefile.Linden all
+                cp -a libminizip.a "$stage"/lib/debug/
+                # conditionally run unit tests
+                if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                    make -f Makefile.Linden test
+                fi
+                make -f Makefile.Linden clean
+            popd
+
             # clean the build artifacts
             make distclean
 
@@ -168,11 +215,32 @@ pushd "$ZLIB_SOURCE_DIR"
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
                 make test
             fi
+
+            # minizip
+            pushd contrib/minizip
+                CFLAGS="$opts -O3 -fPIC -DPIC" make -f Makefile.Linden all
+                cp -a libminizip.a "$stage"/lib/release/
+                # conditionally run unit tests
+                if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                    make -f Makefile.Linden test
+                fi
+                make -f Makefile.Linden clean
+            popd
+
+            # clean the build artifacts
+            make distclean
         ;;
     esac
     mkdir -p "$stage/LICENSES"
     tail -n 31 README > "$stage/LICENSES/zlib.txt"
+    pushd contrib/minizip
+        mkdir -p "$stage"/include/minizip/
+        cp -a ioapi.h zip.h unzip.h "$stage"/include/minizip/
+    popd
 popd
+
+mkdir -p "$stage"/docs/zlib/
+cp -a README.Linden "$stage"/docs/zlib/
 
 pass
 
