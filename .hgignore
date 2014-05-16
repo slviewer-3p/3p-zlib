@@ -12,3 +12,4 @@ zlib/*.dylib
 zlib/ztest*.dSYM/
 zlib/configure.log
 zlib/Makefile
+zlib/zconf.h
