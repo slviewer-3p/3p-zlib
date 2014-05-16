@@ -1,0 +1,42 @@
+
+# Linden hand-generated makefile for libminizip.a on Linux and Darwin.
+#
+# It wouldn't be difficult to get the autoconf pieces working 
+# here or extending the cmake infrastructure from the library
+# proper.  But for now, we just need three files compiled correctly
+# and stuffed into an archive.
+
+CC?=cc
+CFLAGS?=-O
+
+UNZ_OBJS = miniunz.o unzip.o ioapi.o ../../libz.a
+ZIP_OBJS = minizip.o zip.o   ioapi.o ../../libz.a
+AR_OBJS = unzip.o zip.o ioapi.o
+TEST_FILE = configure.ac
+
+.c.o:
+	$(CC) -c $(CFLAGS) -I../.. $*.c
+
+all: miniunz minizip libminizip.a
+
+libminizip.a: $(AR_OBJS)
+	$(AR) rs $@ $(AR_OBJS)
+
+miniunz:  $(UNZ_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(UNZ_OBJS)
+
+minizip:  $(ZIP_OBJS)
+	$(CC) $(CFLAGS) -o $@ $(ZIP_OBJS)
+
+test:   miniunz minizip
+	rm -f test.zip
+	cp $(TEST_FILE) test.data
+	./minizip test test.data
+	./miniunz -l test.zip
+	mv test.data test.old
+	./miniunz test.zip
+	diff -q test.data test.old
+	echo "Tests Passed"
+
+clean:
+	/bin/rm -f *.o *~ minizip miniunz libminizip.a test.data test.old test.zip

@@ -3,6 +3,10 @@
 <map>
     <key>package_description</key>
     <map>
+      <key>copyright</key>
+      <string>Copyright (C) 1995-2013 Jean-loup Gailly and Mark Adler</string>
+      <key>description</key>
+      <string>Zlib Data Compression Library</string>
       <key>license</key>
       <string>zlib</string>
       <key>license_file</key>
@@ -36,7 +40,9 @@
           <key>manifest</key>
           <array>
             <string>include/zlib/*.h</string>
+            <string>include/minizip/*.h</string>
             <string>LICENSES/zlib.txt</string>
+            <string>docs/zlib/README.Linden</string>
           </array>
           <key>name</key>
           <string>common</string>
@@ -59,7 +65,9 @@
           <key>manifest</key>
           <array>
             <string>lib/debug/libz.a</string>
+            <string>lib/debug/libminizip.a</string>
             <string>lib/release/libz.a</string>
+            <string>lib/release/libminizip.a</string>
           </array>
           <key>name</key>
           <string>darwin</string>
@@ -82,7 +90,9 @@
           <key>manifest</key>
           <array>
             <string>lib/release/libz.a</string>
+            <string>lib/release/libminizip.a</string>
             <string>lib/debug/libz.a</string>
+            <string>lib/debug/libminizip.a</string>
           </array>
           <key>name</key>
           <string>linux</string>
@@ -105,7 +115,9 @@
           <key>manifest</key>
           <array>
             <string>lib/debug/zlibd.lib</string>
+            <string>lib/debug/minizip.lib</string>
             <string>lib/release/zlib.lib</string>
+            <string>lib/release/minizip.lib</string>
           </array>
           <key>name</key>
           <string>windows</string>
