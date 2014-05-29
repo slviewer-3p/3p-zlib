@@ -21,6 +21,10 @@
 
     [ ]  PIC for both archive and shared libraries on *nix?
 
+    [ ]  Update the exported symbols files, libz_darwin_debug.exp and
+         libz_darwin_release.exp, to reflect the external symbols
+         found in the *static* libraries on Mac?
+
 
 1.  Introduction
 
@@ -53,13 +57,23 @@
     than winapi.
 
     * /Zc:wchar_t- (no built-in wchar_t) in zlibstat.vcxproj and
-    testzlib.vcxproj.  Not done in other project files.
+    testzlib.vcxproj.  Not done in other project files (including
+    zlibvc.vcxproj, the DLL project).
+
+    * /Z7 for all zlibstat.vcxproj targets.
 
     * build-cmd.sh was/is an inconsistent mess.  The windows side uses
     cmake to create build files then ignores them and uses a set of
     contributed project files and some assembly code.  Darwin was
     using a debug build in production, that's been switched to
     non-debug but the reason for debug is not known.
+
+    * Static library export files created for Mac.  These are
+    zlib_darwin_debug.exp and zlib_darwin_release.exp in the top-level
+    directory and contain the global symbols found in the libz.a
+    archives on Mac.  These are used when a shared library is being
+    built that pulls in libz but we don't want the shared library to
+    re-export libz's symbols.
 
     2.2  Building Minizip.lib/libminizip.a
 
@@ -105,8 +119,10 @@
 
     Mac OS X:
     * lib/debug/libz.a
+    * lib/debug/libz_darwin.exp
     * lib/debug/libminzip.a
     * lib/release/libz.a
+    * lib/release/libz_darwin.exp
     * lib/release/libminzip.a
 
     Mac OS X (built but not in manifest):
@@ -146,10 +162,11 @@
 
     * fontconfig
     * curl
+    * boost
     * SDL
 
     * colladadom
-    * openjpeg
+    * openjpeg (used by apps)
     * llqtwebkit
 
     * viewer

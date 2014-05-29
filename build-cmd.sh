@@ -23,7 +23,9 @@ set +x
 eval "$("$AUTOBUILD" source_environment)"
 set -x
 
-stage="$(pwd)/stage"
+top="$(pwd)"
+stage="$top"/stage
+
 pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
 
@@ -80,6 +82,7 @@ pushd "$ZLIB_SOURCE_DIR"
             sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/
 
             opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.6}"
+
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
 
@@ -89,7 +92,8 @@ pushd "$ZLIB_SOURCE_DIR"
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
             make
             make install
-            
+            cp -a "$top"/libz_darwin_debug.exp "$stage"/lib/debug/libz_darwin.exp
+
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
                 # Build a Resources directory as a peer to the test executable directory
@@ -122,6 +126,7 @@ pushd "$ZLIB_SOURCE_DIR"
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
+            cp -a "$top"/libz_darwin_release.exp "$stage"/lib/release/libz_darwin.exp
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
