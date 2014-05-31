@@ -75,6 +75,12 @@
     built that pulls in libz but we don't want the shared library to
     re-export libz's symbols.
 
+    * Mac is still building llqtwebkit on 10.5.  To use this library,
+    the -mmacosx-version-min must be kept at 10.5 or __bzero() will be
+    used for memset operations.  As soon as we can deal with the
+    llqtwebkit situation, we can bump this back up and get some faster
+    code.
+
     2.2  Building Minizip.lib/libminizip.a
 
     Minizip is a small contributed utility which demonstrates file

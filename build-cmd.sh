@@ -81,14 +81,19 @@ pushd "$ZLIB_SOURCE_DIR"
             # sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/
             sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/
 
-            opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.6}"
+            # Keeping min version back at 10.5 because we may need to
+            # use this on the 10.5 build machine used for llqtwebkit.
+            # At 10.6, libpng will start using __bzero() which doesn't
+            # exist there.  Once we deal with legacy llqtwebkit, this 
+            # can bump up to 10.6.
+            opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.5}"
 
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
 
             # Debug first
             CFLAGS="$opts -O0 -gdwarf-2 -fPIC -DPIC" \
-                LDFLAGS="-install_name \"${install_name}\" -headerpad_max_install_names" \
+                LDFLAGS="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
             make
             make install
@@ -122,7 +127,7 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # Now release
             CFLAGS="$opts -O3 -gdwarf-2 -fPIC -DPIC" \
-                LDFLAGS="-install_name \"${install_name}\" -headerpad_max_install_names" \
+                LDFLAGS="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
