@@ -81,12 +81,11 @@ pushd "$ZLIB_SOURCE_DIR"
             # sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/
             sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/
 
-            # Keeping min version back at 10.5 because we may need to
-            # use this on the 10.5 build machine used for llqtwebkit.
-            # At 10.6, libpng will start using __bzero() which doesn't
-            # exist there.  Once we deal with legacy llqtwebkit, this 
-            # can bump up to 10.6.
-            opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.5}"
+            # Keep min version back at 10.5 if you are using the
+            # old llqtwebkit repo which builds on 10.5 systems.
+            # At 10.6, zlib will start using __bzero() which doesn't
+            # exist there.
+            opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.6}"
 
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
