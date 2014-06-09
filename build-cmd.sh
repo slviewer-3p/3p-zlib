@@ -23,7 +23,9 @@ set +x
 eval "$("$AUTOBUILD" source_environment)"
 set -x
 
-stage="$(pwd)/stage"
+top="$(pwd)"
+stage="$top"/stage
+
 pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
 
@@ -79,17 +81,23 @@ pushd "$ZLIB_SOURCE_DIR"
             # sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/
             sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/
 
+            # Keep min version back at 10.5 if you are using the
+            # old llqtwebkit repo which builds on 10.5 systems.
+            # At 10.6, zlib will start using __bzero() which doesn't
+            # exist there.
             opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.6}"
+
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
 
             # Debug first
             CFLAGS="$opts -O0 -gdwarf-2 -fPIC -DPIC" \
-                LDFLAGS="-install_name \"${install_name}\" -headerpad_max_install_names" \
+                LDFLAGS="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
             make
             make install
-            
+            cp -a "$top"/libz_darwin_debug.exp "$stage"/lib/debug/libz_darwin.exp
+
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
                 # Build a Resources directory as a peer to the test executable directory
@@ -118,10 +126,11 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # Now release
             CFLAGS="$opts -O3 -gdwarf-2 -fPIC -DPIC" \
-                LDFLAGS="-install_name \"${install_name}\" -headerpad_max_install_names" \
+                LDFLAGS="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
+            cp -a "$top"/libz_darwin_release.exp "$stage"/lib/release/libz_darwin.exp
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
