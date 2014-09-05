@@ -75,25 +75,18 @@ pushd "$ZLIB_SOURCE_DIR"
         "darwin")
             # Select SDK with full path.  This shouldn't have much effect on this
             # build but adding to establish a consistent pattern.
-            #
-            # sdk=/Developer/SDKs/MacOSX10.6.sdk/
-            # sdk=/Developer/SDKs/MacOSX10.7.sdk/
-            # sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk/
-            sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/
-
-            # Keep min version back at 10.5 if you are using the
-            # old llqtwebkit repo which builds on 10.5 systems.
-            # At 10.6, zlib will start using __bzero() which doesn't
-            # exist there.
-            opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.6}"
+            sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/
+            cc_opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.7} -gdwarf-2 -fPIC -DPIC"
+            ld_opts="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names"
+            export CC=clang
 
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
 
             # Debug first
-            CFLAGS="$opts -O0 -gdwarf-2 -fPIC -DPIC" \
-                LDFLAGS="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names" \
-                ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
+            CFLAGS="$cc_opts -O0" \
+                LDFLAGS="$ld_opts" \
+                sh -x ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
             make
             make install
             cp -a "$top"/libz_darwin_debug.exp "$stage"/lib/debug/libz_darwin.exp
@@ -114,7 +107,7 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # minizip
             pushd contrib/minizip
-                CFLAGS="$opts -O0 -gdwarf-2 -fPIC -DPIC" make -f Makefile.Linden all
+                CFLAGS="$cc_opts -O0" make -f Makefile.Linden all
                 cp -a libminizip.a "$stage"/lib/debug/
                 if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
                     make -f Makefile.Linden test
@@ -125,8 +118,8 @@ pushd "$ZLIB_SOURCE_DIR"
             make distclean
 
             # Now release
-            CFLAGS="$opts -O3 -gdwarf-2 -fPIC -DPIC" \
-                LDFLAGS="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names" \
+            CFLAGS="$cc_opts -O3" \
+                LDFLAGS="$ld_opts" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
             make install
@@ -144,7 +137,7 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # minizip
             pushd contrib/minizip
-                CFLAGS="$opts -O3 -gdwarf-2 -fPIC -DPIC" make -f Makefile.Linden all
+                CFLAGS="$cc_opts -O3" make -f Makefile.Linden all
                 cp -a libminizip.a "$stage"/lib/release/
                 if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
                     make -f Makefile.Linden test
