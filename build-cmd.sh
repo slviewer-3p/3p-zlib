@@ -7,7 +7,6 @@ set -x
 # make errors fatal
 set -e
 
-ZLIB_VERSION="1.2.8"
 ZLIB_SOURCE_DIR="zlib"
 
 if [ -z "$AUTOBUILD" ] ; then 
@@ -25,6 +24,10 @@ set -x
 
 top="$(pwd)"
 stage="$top"/stage
+
+version=$(perl -ne 's/#define ZLIB_VERSION "([^"]+)"/$1/ && print' "${ZLIB_SOURCE_DIR}/zlib.h")
+build=${AUTOBUILD_BUILD_ID:=0}
+echo "${version}.${build}" > "${stage}/VERSION.txt"
 
 pushd "$ZLIB_SOURCE_DIR"
     case "$AUTOBUILD_PLATFORM" in
@@ -238,6 +241,7 @@ pushd "$ZLIB_SOURCE_DIR"
     pushd contrib/minizip
         mkdir -p "$stage"/include/minizip/
         cp -a ioapi.h zip.h unzip.h "$stage"/include/minizip/
+        tail -n 22 MiniZip64_info.txt > "$stage/LICENSES/minizip.txt"
     popd
 popd
 

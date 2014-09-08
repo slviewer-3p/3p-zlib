@@ -42,6 +42,7 @@
             <string>include/zlib/*.h</string>
             <string>include/minizip/*.h</string>
             <string>LICENSES/zlib.txt</string>
+            <string>LICENSES/minizip.txt</string>
             <string>docs/zlib/README.Linden</string>
           </array>
           <key>name</key>
@@ -125,12 +126,12 @@
           <string>windows</string>
         </map>
       </map>
-      <key>version</key>
-      <string>1.2.8</string>
+      <key>version_file</key>
+      <string>VERSION.txt</string>
     </map>
     <key>type</key>
     <string>autobuild</string>
     <key>version</key>
-    <string>1.2</string>
+    <string>1.3</string>
   </map>
 </llsd>
