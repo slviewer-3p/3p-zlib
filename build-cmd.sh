@@ -16,7 +16,7 @@ fi
 top="$(pwd)"
 stage="$top"/stage
 
-VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/source/common/unicode/uvernum.h"
+VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/zlib.h"
 VERSION_MACRO="ZLIB_VERSION"
 
 build=${AUTOBUILD_BUILD_ID:=0}
