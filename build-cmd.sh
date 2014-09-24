@@ -13,7 +13,7 @@ top="$(pwd)"
 stage="$top"/stage
 
 # load autobuild provided shell functions and variables
-"$AUTOBUILD" source_environment | sed -e 's/\r[^\n\r]*//g -e s/\r//g' > "${stage}"/source_environment.sh
+"$AUTOBUILD" source_environment | sed -e 's/\r[^\n\r]*//g' -e 's/\r//g' > "${stage}"/source_environment.sh
 source "${stage}"/source_environment.sh
 
 VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/zlib.h"
