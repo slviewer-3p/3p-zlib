@@ -13,19 +13,12 @@ if [ -z "$AUTOBUILD" ] ; then
     fail
 fi
 
-if [ "$OSTYPE" = "cygwin" ] ; then
-    export AUTOBUILD="$(cygpath -u $AUTOBUILD)"
-fi
-
-# load autobuild provided shell functions and variables
-set +x
-eval "$("$AUTOBUILD" source_environment)"
-set -x
-
 top="$(pwd)"
 stage="$top"/stage
 
-version=$(perl -ne 's/#define ZLIB_VERSION "([^"]+)"/$1/ && print' "${ZLIB_SOURCE_DIR}/zlib.h")
+VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/source/common/unicode/uvernum.h"
+VERSION_MACRO="ZLIB_VERSION"
+
 build=${AUTOBUILD_BUILD_ID:=0}
 echo "${version}.${build}" > "${stage}/VERSION.txt"
 
@@ -53,6 +46,15 @@ pushd "$ZLIB_SOURCE_DIR"
                 build_sln "contrib/vstudio/vc10/zlibvc.sln" "Release|Win32" "testzlib"
                 ./contrib/vstudio/vc10/x86/TestZlibRelease/testzlib.exe README
             fi
+
+            # populate version_file
+            cl /DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
+               /DVERSION_MACRO="$VERSION_MACRO" \
+               /Fo"$(cygpath -w "$stage/version.obj")" \
+               /Fe"$(cygpath -w "$stage/version.exe")" \
+               "$(cygpath -w "$top/version.c")"
+            "$stage/version.exe" > "$stage/VERSION.txt"
+            rm "$stage"/version.{obj,exe}
 
             mkdir -p "$stage/lib/debug"
             mkdir -p "$stage/lib/release"
@@ -82,6 +84,13 @@ pushd "$ZLIB_SOURCE_DIR"
             cc_opts="${TARGET_OPTS:--arch i386 -iwithsysroot $sdk -mmacosx-version-min=10.7} -gdwarf-2 -fPIC -DPIC"
             ld_opts="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names"
             export CC=clang
+
+            # populate version_file
+            cc -DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
+               -DVERSION_MACRO="$VERSION_MACRO" \
+               -o "$stage/version" "$top/version.c"
+            "$stage/version" > "$stage/VERSION.txt"
+            rm "$stage/version"
 
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
@@ -184,6 +193,13 @@ pushd "$ZLIB_SOURCE_DIR"
                 # Incorporate special pre-processing flags
                 export CPPFLAGS="$TARGET_CPPFLAGS"
             fi
+
+            # populate version_file
+            cc -DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
+               -DVERSION_MACRO="$VERSION_MACRO" \
+               -o "$stage/version" "$top/version.c"
+            "$stage/version" > "$stage/VERSION.txt"
+            rm "$stage/version"
 
             # Debug first
             CFLAGS="$opts -O0 -g -fPIC -DPIC" CXXFLAGS="$opts -O0 -g -fPIC -DPIC" \
