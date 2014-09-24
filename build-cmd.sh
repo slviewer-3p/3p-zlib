@@ -50,6 +50,7 @@ pushd "$ZLIB_SOURCE_DIR"
             # populate version_file
             cl /DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
                /DVERSION_MACRO="$VERSION_MACRO" \
+               /I "$(cygpath ${ZLIB_SOURCE_DIR})" \
                /Fo"$(cygpath -w "$stage/version.obj")" \
                /Fe"$(cygpath -w "$stage/version.exe")" \
                "$(cygpath -w "$top/version.c")"
@@ -88,6 +89,7 @@ pushd "$ZLIB_SOURCE_DIR"
             # populate version_file
             cc -DVERSION_HEADER_FILE="\"$VERSION_HEADER_FILE\"" \
                -DVERSION_MACRO="$VERSION_MACRO" \
+               -I "${ZLIB_SOURCE_DIR}" \
                -o "$stage/version" "$top/version.c"
             "$stage/version" > "$stage/VERSION.txt"
             rm "$stage/version"
