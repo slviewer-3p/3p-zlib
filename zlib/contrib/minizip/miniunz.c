@@ -27,6 +27,10 @@
         #endif
 #endif
 
+#if defined(__unix__) || defined(__APPLE__)
+   #include <sys/stat.h>
+#endif
+
 #ifdef __APPLE__
 // In darwin and perhaps other BSD variants off_t is a 64 bit value, hence no need for specific 64 bit functions
 #define FOPEN_FUNC(filename, mode) fopen(filename, mode)
@@ -97,7 +101,7 @@ void change_file_date(filename,dosdate,tmu_date)
   SetFileTime(hFile,&ftm,&ftLastAcc,&ftm);
   CloseHandle(hFile);
 #else
-#ifdef unix || __APPLE__
+#if defined(__unix__) || defined(__APPLE__)
   struct utimbuf ut;
   struct tm newdate;
   newdate.tm_sec = tmu_date.tm_sec;
@@ -136,7 +140,7 @@ int mymkdir(dirname)
 }
 
 int makedir (newdir)
-    char *newdir;
+    const char *newdir;
 {
   char *buffer ;
   char *p;
