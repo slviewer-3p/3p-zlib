@@ -29,7 +29,7 @@ pushd "$ZLIB_SOURCE_DIR"
             load_vsvars
 
             # Okay, this invokes cmake then doesn't use the products.  Why?
-            cmake .
+            #cmake .
 
             pushd contrib/masmx86
                 cmd.exe /C bld_ml32.bat
