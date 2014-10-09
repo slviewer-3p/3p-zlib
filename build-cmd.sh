@@ -30,7 +30,7 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # This invokes cmake only to convert zconf.h.cmakein to zconf.h.
             # Without this step, multiple compiles fail for lack of zconf.h.
-            cmake .
+            cmake -G "Visual Studio 12" .
 
             pushd contrib/masmx86
                 cmd.exe /C bld_ml32.bat
