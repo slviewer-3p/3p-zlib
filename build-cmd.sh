@@ -28,8 +28,9 @@ pushd "$ZLIB_SOURCE_DIR"
         "windows")
             load_vsvars
 
-            # Okay, this invokes cmake then doesn't use the products.  Why?
-            #cmake .
+            # This invokes cmake only to convert zconf.h.cmakein to zconf.h.
+            # Without this step, multiple compiles fail for lack of zconf.h.
+            cmake .
 
             pushd contrib/masmx86
                 cmd.exe /C bld_ml32.bat
