@@ -46,9 +46,9 @@ minizip.lib: $(LIB_OBJS)
 !endif
 
 minizip.exe: $*.c minizip.lib
-		$(CC) $(CFLAGS) $*.c minizip.lib $(ZLIB_LIB) /link /LIBPATH:$(ZLIB_LIBPATH) 
+		$(CC) $(CFLAGS) /DZLIB_WINAPI $*.c minizip.lib $(ZLIB_LIB) /link /LIBPATH:$(ZLIB_LIBPATH) 
 
 miniunz.exe: $*.c minizip.lib
-		$(CC) $(CFLAGS) $*.c minizip.lib $(ZLIB_LIB) /link /LIBPATH:$(ZLIB_LIBPATH) 
+		$(CC) $(CFLAGS) /DZLIB_WINAPI $*.c minizip.lib $(ZLIB_LIB) /link /LIBPATH:$(ZLIB_LIBPATH) 
 
 
