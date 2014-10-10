@@ -14,6 +14,7 @@ stage="$top"/stage
 
 # load autobuild provided shell functions and variables
 # dump source_environment
+export AUTOBUILD_VSVER="${AUTOBUILD_VSVER:-120}"
 "$AUTOBUILD" source_environment
 eval "$($AUTOBUILD source_environment)"
 
@@ -44,24 +45,24 @@ pushd "$ZLIB_SOURCE_DIR"
             pushd contrib/masmx86
                 cmd.exe /C bld_ml32.bat
             popd
-            
-            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Debug|Win32" "zlibstat"
-            build_sln "contrib/vstudio/vc10/zlibvc.sln" "Release|Win32" "zlibstat"
+
+            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|Win32" "zlibstat"
+            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|Win32" "zlibstat"
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-                build_sln "contrib/vstudio/vc10/zlibvc.sln" "Debug|Win32" "testzlib"
-                ./contrib/vstudio/vc10/x86/TestZlibDebug/testzlib.exe README
+                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|Win32" "testzlib"
+                ./contrib/vstudio/vc12/x86/TestZlibDebug/testzlib.exe README
 
-                build_sln "contrib/vstudio/vc10/zlibvc.sln" "Release|Win32" "testzlib"
-                ./contrib/vstudio/vc10/x86/TestZlibRelease/testzlib.exe README
+                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|Win32" "testzlib"
+                ./contrib/vstudio/vc12/x86/TestZlibRelease/testzlib.exe README
             fi
 
             mkdir -p "$stage/lib/debug"
             mkdir -p "$stage/lib/release"
-            cp -a "contrib/vstudio/vc10/x86/ZlibStatDebug/zlibstat.lib" \
+            cp -a "contrib/vstudio/vc12/x86/ZlibStatDebug/zlibstat.lib" \
                 "$stage/lib/debug/zlibd.lib"
-            cp -a "contrib/vstudio/vc10/x86/ZlibStatRelease/zlibstat.lib" \
+            cp -a "contrib/vstudio/vc12/x86/ZlibStatRelease/zlibstat.lib" \
                 "$stage/lib/release/zlib.lib"
             mkdir -p "$stage/include/zlib"
             cp -a zlib.h zconf.h "$stage/include/zlib"
