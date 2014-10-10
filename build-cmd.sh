@@ -33,12 +33,13 @@ pushd "$ZLIB_SOURCE_DIR"
             # However, we may be finding the wrong cmake: the one we're
             # getting says: "CMake Error: Could not create named generator
             # Visual Studio 12".
+            echo "$PATH" | tr ':' '\n'
             which cmake
             # should list generators
             cmake --help || echo "--help exited with rc $?"
             # do we even have the right cmake installed?
             find /cygdrive/c -maxdepth 4 -iname cmake.exe -print
-            cmake -G "Visual Studio 12" .
+            "c:/Program Files (x86)/CMake/bin/cmake" -G "Visual Studio 12" .
 
             pushd contrib/masmx86
                 cmd.exe /C bld_ml32.bat
