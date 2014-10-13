@@ -31,16 +31,7 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # This invokes cmake only to convert zconf.h.cmakein to zconf.h.
             # Without this step, multiple compiles fail for lack of zconf.h.
-            # However, we may be finding the wrong cmake: the one we're
-            # getting says: "CMake Error: Could not create named generator
-            # Visual Studio 12".
-            echo "$PATH" | tr ':' '\n'
-            which cmake
-            # should list generators
-            cmake --help || echo "--help exited with rc $?"
-            # do we even have the right cmake installed?
-            find /cygdrive/c -maxdepth 4 -iname cmake.exe -print
-            "c:/Program Files (x86)/CMake/bin/cmake" -G "Visual Studio 12" .
+            cmake -G "Visual Studio 12" .
 
             pushd contrib/masmx86
                 cmd.exe /C bld_ml32.bat
