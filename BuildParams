@@ -1,5 +1,2 @@
 # Use Public Upload Locations
 public_build = true
-
-# tell autobuild to use VS2013
-AUTOBUILD_VSVER=120

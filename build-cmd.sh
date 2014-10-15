@@ -14,9 +14,8 @@ stage="$top"/stage
 
 # load autobuild provided shell functions and variables
 # dump source_environment
-export AUTOBUILD_VSVER="${AUTOBUILD_VSVER:-120}"
 "$AUTOBUILD" source_environment
-eval "$($AUTOBUILD source_environment)"
+eval "$("$AUTOBUILD" source_environment)"
 
 VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/zlib.h"
 version=$(sed -n -E 's/#define ZLIB_VERSION "([0-9.]+)"/\1/p' "${VERSION_HEADER_FILE}")
