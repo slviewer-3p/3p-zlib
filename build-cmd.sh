@@ -13,8 +13,9 @@ top="$(pwd)"
 stage="$top"/stage
 
 # load autobuild provided shell functions and variables
-# dump source_environment
-"$AUTOBUILD" source_environment
+if [ "$AUTOBUILD_PLATFORM" == "windows" ]
+then AUTOBUILD="$(cygpath -u "$AUTOBUILD")"
+fi
 eval "$("$AUTOBUILD" source_environment)"
 
 VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/zlib.h"
