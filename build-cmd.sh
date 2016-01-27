@@ -37,15 +37,15 @@ pushd "$ZLIB_SOURCE_DIR"
                 cmd.exe /C bld_ml32.bat
             popd
 
-            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|Win32" "zlibstat"
-            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|Win32" "zlibstat"
+            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|Win$AUTOBUILD_ADDRSIZE" "zlibstat"
+            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|Win$AUTOBUILD_ADDRSIZE" "zlibstat"
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|Win32" "testzlib"
+                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|Win$AUTOBUILD_ADDRSIZE" "testzlib"
                 ./contrib/vstudio/vc12/x86/TestZlibDebug/testzlib.exe README
 
-                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|Win32" "testzlib"
+                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|Win$AUTOBUILD_ADDRSIZE" "testzlib"
                 ./contrib/vstudio/vc12/x86/TestZlibRelease/testzlib.exe README
             fi
 
@@ -168,8 +168,8 @@ pushd "$ZLIB_SOURCE_DIR"
                 export CXX=/usr/bin/g++-4.6
             fi
 
-            # Default target to 32-bit
-            opts="${TARGET_OPTS:--m32}"
+            # Default target per autobuild build --address-size
+            opts="${TARGET_OPTS:--m$AUTOBUILD_ADDRSIZE}"
 
             # Handle any deliberate platform targeting
             if [ -z "$TARGET_CPPFLAGS" ]; then
