@@ -29,19 +29,6 @@ pushd "$ZLIB_SOURCE_DIR"
         "windows")
             load_vsvars
 
-            # This mapping should probably migrate into autobuild source_environment
-            case "$AUTOBUILD_ADDRSIZE" in
-                "32")
-                    vsplat="Win32"
-                    ;;
-                "64")
-                    vsplat="x64"
-                    ;;
-                *)
-                    fail "Invalid value for AUTOBUILD_ADDRSIZE: $AUTOBUILD_ADDRSIZE"
-                    ;;
-            esac
-
             # This invokes cmake only to convert zconf.h.cmakein to zconf.h.
             # Without this step, multiple compiles fail for lack of zconf.h.
             cmake -G "Visual Studio 12" .
@@ -50,15 +37,15 @@ pushd "$ZLIB_SOURCE_DIR"
                 cmd.exe /C bld_ml32.bat
             popd
 
-            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$vsplat" "zlibstat"
-            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$vsplat" "zlibstat"
+            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
+            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
 
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$vsplat" "testzlib"
+                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
                 ./contrib/vstudio/vc12/x86/TestZlibDebug/testzlib.exe README
 
-                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$vsplat" "testzlib"
+                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
                 ./contrib/vstudio/vc12/x86/TestZlibRelease/testzlib.exe README
             fi
 
