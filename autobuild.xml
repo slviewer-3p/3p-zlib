@@ -40,9 +40,9 @@
           <key>manifest</key>
           <array>
             <string>include/zlib/*.h</string>
-            <string>include/minizip/*.h</string>
+<!--        <string>include/minizip/*.h</string> -->
             <string>LICENSES/zlib.txt</string>
-            <string>LICENSES/minizip.txt</string>
+<!--        <string>LICENSES/minizip.txt</string> -->
             <string>docs/zlib/README.Linden</string>
           </array>
           <key>name</key>
@@ -65,12 +65,14 @@
           </map>
           <key>manifest</key>
           <array>
+<!--
             <string>lib/debug/libz.a</string>
             <string>lib/debug/libz_darwin.exp</string>
             <string>lib/debug/libminizip.a</string>
+-->
             <string>lib/release/libz.a</string>
             <string>lib/release/libz_darwin.exp</string>
-            <string>lib/release/libminizip.a</string>
+<!--        <string>lib/release/libminizip.a</string> -->
           </array>
           <key>name</key>
           <string>darwin</string>
