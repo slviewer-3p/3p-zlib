@@ -46,13 +46,10 @@ pushd "$ZLIB_SOURCE_DIR"
             build_sln "contrib/vstudio/vc12/zlibvc.sln" "ReleaseWithoutAsm|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
 
             # conditionally run unit tests
-            # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-            #     build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
-            #     ./contrib/vstudio/vc12/x86/TestZlibDebug/testzlib.exe README
-
-            #     build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
-            #     ./contrib/vstudio/vc12/x86/TestZlibRelease/testzlib.exe README
-            # fi
+            if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                build_sln "contrib/vstudio/vc12/zlibvc.sln" "ReleaseWithoutAsm|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
+                ./contrib/vstudio/vc12/$AUTOBUILD_WIN_VSPLATFORM/TestZlibReleaseWithoutAsm/testzlib.exe README
+            fi
 
             # mkdir -p "$stage/lib/debug"
             mkdir -p "$stage/lib/release"
