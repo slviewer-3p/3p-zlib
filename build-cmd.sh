@@ -13,9 +13,11 @@ top="$(pwd)"
 stage="$top"/stage
 
 # load autobuild provided shell functions and variables
-if [ "$AUTOBUILD_PLATFORM" == "windows" ]
-then AUTOBUILD="$(cygpath -u "$AUTOBUILD")"
-fi
+case "$AUTOBUILD_PLATFORM" in
+	windows*)
+		AUTOBUILD="$(cygpath -u "$AUTOBUILD")"
+	;;
+esac
 eval "$("$AUTOBUILD" source_environment)"
 
 # For this library, like most third-party libraries, we only care about
@@ -39,43 +41,25 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # This invokes cmake only to convert zconf.h.cmakein to zconf.h.
             # Without this step, multiple compiles fail for lack of zconf.h.
-            cmake -G "Visual Studio 12" .
+            cmake -G "Visual Studio 12" . -DASM686=NO -DAMD64=NO
 
-            pushd contrib/masmx86
-                cmd.exe /C bld_ml32.bat
-            popd
-
-            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
-            build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
+            build_sln "contrib/vstudio/vc12/zlibvc.sln" "ReleaseWithoutAsm|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
 
             # conditionally run unit tests
-            if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
-                ./contrib/vstudio/vc12/x86/TestZlibDebug/testzlib.exe README
+            # if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+            #     build_sln "contrib/vstudio/vc12/zlibvc.sln" "Debug|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
+            #     ./contrib/vstudio/vc12/x86/TestZlibDebug/testzlib.exe README
 
-                build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
-                ./contrib/vstudio/vc12/x86/TestZlibRelease/testzlib.exe README
-            fi
+            #     build_sln "contrib/vstudio/vc12/zlibvc.sln" "Release|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
+            #     ./contrib/vstudio/vc12/x86/TestZlibRelease/testzlib.exe README
+            # fi
 
-            mkdir -p "$stage/lib/debug"
+            # mkdir -p "$stage/lib/debug"
             mkdir -p "$stage/lib/release"
-            cp -a "contrib/vstudio/vc12/x86/ZlibStatDebug/zlibstat.lib" \
-                "$stage/lib/debug/zlibd.lib"
-            cp -a "contrib/vstudio/vc12/x86/ZlibStatRelease/zlibstat.lib" \
+            cp -a "contrib/vstudio/vc12/$AUTOBUILD_WIN_VSPLATFORM/ZlibStatReleaseWithoutAsm/zlibstat.lib" \
                 "$stage/lib/release/zlib.lib"
             mkdir -p "$stage/include/zlib"
             cp -a zlib.h zconf.h "$stage/include/zlib"
-
-            # minizip
-            pushd contrib/minizip
-                nmake /f Makefile.Linden.Win32.mak DEBUG=1
-                cp -a minizip.lib "$stage"/lib/debug/
-                nmake /f Makefile.Linden.Win32.mak DEBUG=1 clean
-
-                nmake /f Makefile.Linden.Win32.mak
-                cp -a minizip.lib "$stage"/lib/release/
-                nmake /f Makefile.Linden.Win32.mak clean
-            popd
         ;;
 
         # ------------------------- darwin, darwin64 -------------------------
