@@ -45,15 +45,20 @@ pushd "$ZLIB_SOURCE_DIR"
 
             build_sln "contrib/vstudio/vc12/zlibvc.sln" "ReleaseWithoutAsm|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
 
+            if [ "$AUTOBUILD_ADDRSIZE" = 32 ]
+            then bitdir=x86
+            else bitdir=x64
+            fi
+
             # conditionally run unit tests
             if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
                 build_sln "contrib/vstudio/vc12/zlibvc.sln" "ReleaseWithoutAsm|$AUTOBUILD_WIN_VSPLATFORM" "testzlib"
-                ./contrib/vstudio/vc12/$AUTOBUILD_WIN_VSPLATFORM/TestZlibReleaseWithoutAsm/testzlib.exe README
+                ./contrib/vstudio/vc12/$bitdir/TestZlibReleaseWithoutAsm/testzlib.exe README
             fi
 
             # mkdir -p "$stage/lib/debug"
             mkdir -p "$stage/lib/release"
-            cp -a "contrib/vstudio/vc12/$AUTOBUILD_WIN_VSPLATFORM/ZlibStatReleaseWithoutAsm/zlibstat.lib" \
+            cp -a "contrib/vstudio/vc12/$bitdir/ZlibStatReleaseWithoutAsm/zlibstat.lib" \
                 "$stage/lib/release/zlib.lib"
             mkdir -p "$stage/include/zlib"
             cp -a zlib.h zconf.h "$stage/include/zlib"
