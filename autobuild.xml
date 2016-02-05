@@ -90,9 +90,7 @@
           <key>manifest</key>
           <array>
             <string>lib/release/libz.a</string>
-            <string>lib/release/libminizip.a</string>
-            <string>lib/debug/libz.a</string>
-            <string>lib/debug/libminizip.a</string>
+<!--        <string>lib/release/libminizip.a</string> -->
           </array>
           <key>name</key>
           <string>linux</string>
@@ -115,7 +113,7 @@
           <key>manifest</key>
           <array>
             <string>lib/release/zlib.lib</string>
-<!--            <string>lib/release/minizip.lib</string>-->
+<!--        <string>lib/release/minizip.lib</string>-->
           </array>
           <key>name</key>
           <string>windows</string>
