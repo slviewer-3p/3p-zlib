@@ -22,7 +22,7 @@ eval "$("$AUTOBUILD" source_environment)"
 
 # For this library, like most third-party libraries, we only care about
 # Release mode, so source build-variables up front.
-build_variables="../build-variables/convenience"
+build_variables="${build_variables_checkout:-../build-variables}/convenience"
 [ -r "$build_variables" ] || \
 fail "Please clone https://bitbucket.org/lindenlab/build-variables beside this repo."
 source "$build_variables" Release
