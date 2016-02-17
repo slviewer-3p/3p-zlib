@@ -20,13 +20,13 @@ case "$AUTOBUILD_PLATFORM" in
 esac
 eval "$("$AUTOBUILD" source_environment)"
 
-# Unclear why we're not picking up $build_variables_checkout on TC. Brute force:
-echo "Dump of relevant environment variables:"
-set | grep "build.variables"
-
 # For this library, like most third-party libraries, we only care about
 # Release mode, so source build-variables up front.
-build_variables="${build_variables_checkout:-../build-variables}/convenience"
+# Even though the generic buildscripts build.sh sets environment variable
+# build_variables_checkout, evidently someone thought it would be a good idea
+# to uppercase all environment variables before passing them down to an
+# autobuild build command.
+build_variables="${BUILD_VARIABLES_CHECKOUT:-../build-variables}/convenience"
 [ -r "$build_variables" ] || \
 fail "Please clone https://bitbucket.org/lindenlab/build-variables beside this repo."
 source "$build_variables" Release
