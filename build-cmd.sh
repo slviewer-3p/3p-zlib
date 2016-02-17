@@ -20,6 +20,10 @@ case "$AUTOBUILD_PLATFORM" in
 esac
 eval "$("$AUTOBUILD" source_environment)"
 
+# Unclear why we're not picking up $build_variables_checkout on TC. Brute force:
+echo "Dump of relevant environment variables:"
+set | grep "build.variables"
+
 # For this library, like most third-party libraries, we only care about
 # Release mode, so source build-variables up front.
 build_variables="${build_variables_checkout:-../build-variables}/convenience"
