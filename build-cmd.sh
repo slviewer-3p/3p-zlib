@@ -25,8 +25,11 @@ eval "$("$AUTOBUILD" source_environment)"
 # Even though the generic buildscripts build.sh sets environment variable
 # build_variables_checkout, evidently someone thought it would be a good idea
 # to uppercase all environment variables before passing them down to an
-# autobuild build command.
-build_variables="${BUILD_VARIABLES_CHECKOUT:-../build-variables}/convenience"
+# autobuild build command. Perhaps that "someone" is the Windows runtime?
+echo "OSTYPE=$OSTYPE"
+echo "build_variables_checkout=$build_variables_checkout"
+echo "BUILD_VARIABLES_CHECKOUT=$BUILD_VARIABLES_CHECKOUT"
+build_variables="${build_variables_checkout:-${BUILD_VARIABLES_CHECKOUT:-../build-variables}}/convenience"
 [ -r "$build_variables" ] || \
 fail "Please clone https://bitbucket.org/lindenlab/build-variables beside this repo."
 source "$build_variables" Release
