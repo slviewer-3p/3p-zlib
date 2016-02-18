@@ -48,7 +48,7 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # This invokes cmake only to convert zconf.h.cmakein to zconf.h.
             # Without this step, multiple compiles fail for lack of zconf.h.
-            cmake -G "Visual Studio 12" . -DASM686=NO -DAMD64=NO
+            cmake . -DASM686=NO -DAMD64=NO
 
             build_sln "contrib/vstudio/vc12/zlibvc.sln" "ReleaseWithoutAsm|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
 
@@ -91,41 +91,7 @@ pushd "$ZLIB_SOURCE_DIR"
             ld_opts="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names"
             export CC=clang
 
-##          # Debug first
-##          CFLAGS="$cc_opts -O0" \
-##              LDFLAGS="$ld_opts" \
-##              sh -x ./configure $cfg_sw --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
-##          make
-##          make install
-##          cp -a "$top"/libz_darwin_debug.exp "$stage"/lib/debug/libz_darwin.exp
-##
-##          # conditionally run unit tests
-##          if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-##              # Build a Resources directory as a peer to the test executable directory
-##              # and fill it with symlinks to the dylibs.  This replicates the target
-##              # environment of the viewer.
-##              mkdir -p ../Resources
-##              ln -sf "${stage}/lib/debug"/*.dylib ../Resources
-##
-##              make test
-##
-##              # And wipe it
-##              rm -rf ../Resources
-##          fi
-##
-##          # minizip
-##          pushd contrib/minizip
-##              CFLAGS="$cc_opts -O0" make -f Makefile.Linden all
-##              cp -a libminizip.a "$stage"/lib/debug/
-##              if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-##                  make -f Makefile.Linden test
-##              fi
-##              make -f Makefile.Linden clean
-##          popd
-##
-##          make distclean
-
-            # Now release
+            # release
             CFLAGS="$cc_opts" \
             LDFLAGS="$ld_opts" \
                 ./configure $cfg_sw --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
@@ -147,15 +113,15 @@ pushd "$ZLIB_SOURCE_DIR"
                 rm -rf ../Resources
             fi
 
-##          # minizip
-##          pushd contrib/minizip
-##              CFLAGS="$cc_opts -O3" make -f Makefile.Linden all
-##              cp -a libminizip.a "$stage"/lib/release/
-##              if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-##                  make -f Makefile.Linden test
-##              fi
-##              make -f Makefile.Linden clean
-##          popd
+            # minizip
+            pushd contrib/minizip
+                CFLAGS="$cc_opts" make -f Makefile.Linden all
+                cp -a libminizip.a "$stage"/lib/release/
+                if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                    make -f Makefile.Linden test
+                fi
+                make -f Makefile.Linden clean
+            popd
 
             make distclean
         ;;            
@@ -195,32 +161,7 @@ pushd "$ZLIB_SOURCE_DIR"
                 export CPPFLAGS="$TARGET_CPPFLAGS"
             fi
 
-##          # Debug first
-##          CFLAGS="$opts" CXXFLAGS="$opts" \
-##              ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/debug"
-##          make
-##          make install
-##
-##          # conditionally run unit tests
-##          if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-##              make test
-##          fi
-##
-##          # minizip
-##          pushd contrib/minizip
-##              CFLAGS="$opts -O0 -g -fPIC -DPIC" make -f Makefile.Linden all
-##              cp -a libminizip.a "$stage"/lib/debug/
-##              # conditionally run unit tests
-##              if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-##                  make -f Makefile.Linden test
-##              fi
-##              make -f Makefile.Linden clean
-##          popd
-##
-##          # clean the build artifacts
-##          make distclean
-
-            # Release last
+            # Release
             CFLAGS="$opts" CXXFLAGS="$opts" \
                 ./configure --prefix="$stage" --includedir="$stage/include/zlib" --libdir="$stage/lib/release"
             make
@@ -231,16 +172,16 @@ pushd "$ZLIB_SOURCE_DIR"
                 make test
             fi
 
-##          # minizip
-##          pushd contrib/minizip
-##              CFLAGS="$opts -O3 -fPIC -DPIC" make -f Makefile.Linden all
-##              cp -a libminizip.a "$stage"/lib/release/
-##              # conditionally run unit tests
-##              if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
-##                  make -f Makefile.Linden test
-##              fi
-##              make -f Makefile.Linden clean
-##          popd
+            # minizip
+            pushd contrib/minizip
+                CFLAGS="$opts" make -f Makefile.Linden all
+                cp -a libminizip.a "$stage"/lib/release/
+                # conditionally run unit tests
+                if [ "${DISABLE_UNIT_TESTS:-0}" = "0" ]; then
+                    make -f Makefile.Linden test
+                fi
+                make -f Makefile.Linden clean
+            popd
 
             # clean the build artifacts
             make distclean
@@ -261,11 +202,12 @@ pushd "$ZLIB_SOURCE_DIR"
     # Exiting here means we failed to match the copyright section header.
     # Check the README and adjust the awk regexp accordingly.
     [ -s "$stage/LICENSES/zlib.txt" ]
-##  pushd contrib/minizip
-##      mkdir -p "$stage"/include/minizip/
-##      cp -a ioapi.h zip.h unzip.h "$stage"/include/minizip/
-##      tail -n 22 MiniZip64_info.txt > "$stage/LICENSES/minizip.txt"
-##  popd
+    pushd contrib/minizip
+        mkdir -p "$stage"/include/minizip/
+        cp -a ioapi.h zip.h unzip.h "$stage"/include/minizip/
+        awk '/^License$/,/@%rest%@/' MiniZip64_info.txt > "$stage/LICENSES/minizip.txt"
+        [ -s "$stage/LICENSES/minizip.txt" ]
+    popd
 popd
 
 mkdir -p "$stage"/docs/zlib/
