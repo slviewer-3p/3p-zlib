@@ -26,9 +26,6 @@ eval "$("$AUTOBUILD" source_environment)"
 # build_variables_checkout, evidently someone thought it would be a good idea
 # to uppercase all environment variables before passing them down to an
 # autobuild build command. Perhaps that "someone" is the Windows runtime?
-echo "OSTYPE=$OSTYPE"
-echo "build_variables_checkout=$build_variables_checkout"
-echo "BUILD_VARIABLES_CHECKOUT=$BUILD_VARIABLES_CHECKOUT"
 build_variables="${build_variables_checkout:-${BUILD_VARIABLES_CHECKOUT:-../build-variables}}/convenience"
 [ -r "$build_variables" ] || \
 fail "Please clone https://bitbucket.org/lindenlab/build-variables beside this repo."
@@ -48,7 +45,7 @@ pushd "$ZLIB_SOURCE_DIR"
 
             # This invokes cmake only to convert zconf.h.cmakein to zconf.h.
             # Without this step, multiple compiles fail for lack of zconf.h.
-            cmake . -DASM686=NO -DAMD64=NO
+            cmake -G "$AUTOBUILD_WIN_CMAKE_GEN" . -DASM686=NO -DAMD64=NO
 
             build_sln "contrib/vstudio/vc12/zlibvc.sln" "ReleaseWithoutAsm|$AUTOBUILD_WIN_VSPLATFORM" "zlibstat"
 
