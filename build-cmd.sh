@@ -72,11 +72,9 @@ pushd "$ZLIB_SOURCE_DIR"
         darwin*)
             case "$AUTOBUILD_ADDRSIZE" in
                 32)
-                    cc_arch="i386"
                     cfg_sw=
                     ;;
                 64)
-                    cc_arch="x86_64"
                     cfg_sw="--64"
                     ;;
             esac
@@ -84,7 +82,7 @@ pushd "$ZLIB_SOURCE_DIR"
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
 
-            cc_opts="${TARGET_OPTS:--arch $cc_arch $LL_BUILD}"
+            cc_opts="${TARGET_OPTS:--arch $AUTOBUILD_CONFIGURE_ARCH $LL_BUILD}"
             ld_opts="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names"
             export CC=clang
 
