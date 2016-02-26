@@ -6,6 +6,8 @@ cd "$(dirname "$0")"
 set -x
 # make errors fatal
 set -e
+# bleat on references to undefined shell variables
+set -u
 
 ZLIB_SOURCE_DIR="zlib"
 
@@ -22,14 +24,7 @@ eval "$("$AUTOBUILD" source_environment)"
 
 # For this library, like most third-party libraries, we only care about
 # Release mode, so source build-variables up front.
-# Even though the generic buildscripts build.sh sets environment variable
-# build_variables_checkout, evidently someone thought it would be a good idea
-# to uppercase all environment variables before passing them down to an
-# autobuild build command. Perhaps that "someone" is the Windows runtime?
-build_variables="${build_variables_checkout:-${BUILD_VARIABLES_CHECKOUT:-../build-variables}}/convenience"
-[ -r "$build_variables" ] || \
-fail "Please clone https://bitbucket.org/lindenlab/build-variables beside this repo."
-source "$build_variables" Release
+set_build_variables convenience Release
 
 VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/zlib.h"
 version=$(sed -n -E 's/#define ZLIB_VERSION "([0-9.]+)"/\1/p' "${VERSION_HEADER_FILE}")
