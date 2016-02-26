@@ -61,6 +61,14 @@ pushd "$ZLIB_SOURCE_DIR"
                 "$stage/lib/release/zlib.lib"
             mkdir -p "$stage/include/zlib"
             cp -a zlib.h zconf.h "$stage/include/zlib"
+
+            # minizip
+            pushd contrib/minizip
+                nmake /f Makefile.Linden.Win32.mak \
+                    CFLAGS="/nologo $LL_BUILD /I. /I..\..\..\stage\include\zlib"
+                cp -a minizip.lib "$stage"/lib/release/
+                nmake /f Makefile.Linden.Win32.mak clean
+            popd
         ;;
 
         # ------------------------- darwin, darwin64 -------------------------
