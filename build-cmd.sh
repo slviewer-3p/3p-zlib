@@ -16,11 +16,14 @@ stage="$top"/stage
 
 # load autobuild provided shell functions and variables
 case "$AUTOBUILD_PLATFORM" in
-	windows*)
-		AUTOBUILD="$(cygpath -u "$AUTOBUILD")"
-	;;
+    windows*)
+        autobuild="$(cygpath -u "$AUTOBUILD")"
+    ;;
+    *)
+        autobuild="$AUTOBUILD"
+    ;;
 esac
-eval "$("$AUTOBUILD" source_environment)"
+eval "$("$autobuild" source_environment)"
 
 # For this library, like most third-party libraries, we only care about
 # Release mode, so source build-variables up front.
