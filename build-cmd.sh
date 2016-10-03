@@ -84,7 +84,7 @@ pushd "$ZLIB_SOURCE_DIR"
             # Install name for dylibs based on major version number
             install_name="@executable_path/../Resources/libz.1.dylib"
 
-            cc_opts="${TARGET_OPTS:--arch $AUTOBUILD_CONFIGURE_ARCH $LL_BUILD}"
+            cc_opts="${TARGET_OPTS:--arch $AUTOBUILD_CONFIGURE_ARCH $LL_BUILD_RELEASE}"
             ld_opts="-Wl,-install_name,\"${install_name}\" -Wl,-headerpad_max_install_names"
             export CC=clang
 
@@ -147,7 +147,7 @@ pushd "$ZLIB_SOURCE_DIR"
             fi
 
             # Default target per autobuild build --address-size
-            opts="${TARGET_OPTS:--m$AUTOBUILD_ADDRSIZE $LL_BUILD}"
+            opts="${TARGET_OPTS:--m$AUTOBUILD_ADDRSIZE $LL_BUILD_RELEASE}"
 
             # Handle any deliberate platform targeting
             if [ ! "${TARGET_CPPFLAGS:-}" ]; then
