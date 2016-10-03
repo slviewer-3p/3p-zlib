@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cd "$(dirname "$0")"
 
 # turn on verbose debugging output for logs.
-set -x
+exec 4>&1; export BASH_XTRACEFD=4; set -x
 # make errors fatal
 set -e
 # bleat on references to undefined shell variables
@@ -23,7 +23,9 @@ case "$AUTOBUILD_PLATFORM" in
         autobuild="$AUTOBUILD"
     ;;
 esac
-eval "$("$autobuild" source_environment)"
+source_environment_tempfile="$stage/source_environment.sh"
+"$autobuild" source_environment > "$source_environment_tempfile"
+. "$source_environment_tempfile"
 
 # For this library, like most third-party libraries, we only care about
 # Release mode, so source build-variables up front.
@@ -211,5 +213,3 @@ popd
 
 mkdir -p "$stage"/docs/zlib/
 cp -a README.Linden "$stage"/docs/zlib/
-
-pass
