@@ -27,10 +27,6 @@ source_environment_tempfile="$stage/source_environment.sh"
 "$autobuild" source_environment > "$source_environment_tempfile"
 . "$source_environment_tempfile"
 
-# For this library, like most third-party libraries, we only care about
-# Release mode, so source build-variables up front.
-set_build_variables convenience Release
-
 VERSION_HEADER_FILE="$ZLIB_SOURCE_DIR/zlib.h"
 version=$(sed -n -E 's/#define ZLIB_VERSION "([0-9.]+)"/\1/p' "${VERSION_HEADER_FILE}")
 build=${AUTOBUILD_BUILD_ID:=0}
